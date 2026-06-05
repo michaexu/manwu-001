@@ -1,0 +1,68 @@
+.page { min-height: 100vh; padding-bottom: 30rpx; }
+
+.search-bar {
+  padding: 20rpx 24rpx;
+}
+
+.search-input {
+  width: 100%;
+  height: 80rpx;
+  padding: 0 30rpx;
+  background: #FFF8F0;
+  border: 2rpx solid #F0E8DE;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+  box-sizing: border-box;
+}
+
+.member-item {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.member-avatar {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+}
+
+.member-info {
+  flex: 1;
+}
+
+.member-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #2D1B00;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.member-stats {
+  text-align: right;
+}
+
+.member-points {
+  font-size: 28rpx;
+  color: #8B7A66;
+}
+
+.member-arrow {
+  font-size: 36rpx;
+  color: #D4A030;
+  margin-left: 12rpx;
+}
+
+.avatar-placeholder-sm {
+  background: #F0E8DE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.avatar-placeholder-sm-text {
+  color: #8B7A66;
+  font-size: 28rpx;
+  font-weight: 600;
+}

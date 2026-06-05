@@ -1,0 +1,49 @@
+<view class="page">
+  <!-- 顶栏 红底 -->
+  <view class="header-card">
+    <text class="header-title">会员领物</text>
+    <text class="header-sub">浏览精彩活动，到店领取奖品</text>
+  </view>
+
+  <!-- 活动列表 -->
+  <view class="section-title">热门活动</view>
+
+  <view class="activity-list">
+    <view
+      class="activity-card card"
+      wx:for="{{activities}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      catchtap="goToDetail"
+    >
+      <block wx:if="{{item.coverImage && !item._coverError}}">
+        <image class="activity-cover" src="{{item.coverImage}}" mode="aspectFill" data-index="{{index}}" binderror="onCoverError" />
+      </block>
+      <view wx:else class="activity-cover placeholder-cover">
+        <text class="placeholder-cover-text">活动</text>
+      </view>
+      <view class="activity-info">
+        <view class="activity-title">{{item.title}}</view>
+        <view class="activity-meta">
+          <text class="meta-item">{{item.location}}</text>
+          <text class="meta-item">{{item.startTime.slice(5, 16)}}</text>
+        </view>
+        <view class="activity-quota">
+          <text class="quota-tag vip-quota" wx:if="{{item.vipRemaining !== '不限' && item.vipRemaining > 0}}">VIP 余{{item.vipRemaining}}</text>
+          <text class="quota-tag vip-full" wx:if="{{item.vipRemaining === 0}}">VIP 满</text>
+          <text class="quota-tag regular-quota" wx:if="{{item.regularRemaining !== '不限' && item.regularRemaining > 0}}">普通 余{{item.regularRemaining}}</text>
+          <text class="quota-tag regular-full" wx:if="{{item.regularRemaining === 0}}">普通 满</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="loading-container" wx:if="{{isLoading}}">
+    <text>加载中...</text>
+  </view>
+
+  <view class="empty-state" wx:if="{{!isLoading && activities.length === 0}}">
+    <text>暂无活动</text>
+    <text style="font-size:28rpx;color:#8B7A66;margin-top:16rpx;">敬请期待更多精彩活动</text>
+  </view>
+</view>

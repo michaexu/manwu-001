@@ -1,0 +1,56 @@
+<view class="page">
+  <!-- 积分概览 -->
+  <view class="points-header">
+    <view class="points-card">
+      <text class="card-label">我的积分</text>
+      <text class="card-value">{{memberInfo.pointsBalance || 0}}</text>
+      <text class="card-desc">积分永久有效</text>
+    </view>
+    <view class="points-history" catchtap="goToPointsDetail">
+      <text>积分明细 ›</text>
+    </view>
+  </view>
+
+  <!-- 每日签到 -->
+  <view class="checkin-card card" wx:if="{{isLoggedIn}}">
+    <view class="checkin-left">
+      <view class="checkin-icon">📅</view>
+      <view class="checkin-info">
+        <text class="checkin-title">每日签到</text>
+        <text class="checkin-desc" wx:if="{{checkInStatus && !checkInStatus.checkedInToday}}">签到送 1 积分</text>
+        <text class="checkin-done" wx:if="{{checkInStatus && checkInStatus.checkedInToday}}">今日已签到</text>
+        <text class="checkin-streak" wx:if="{{checkInStatus && checkInStatus.streak > 0}}">已连续签到 {{checkInStatus.streak}} 天</text>
+      </view>
+    </view>
+    <view class="checkin-right">
+      <button class="btn-primary checkin-btn" wx:if="{{!checkInStatus || !checkInStatus.checkedInToday}}" catchtap="handleCheckIn" disabled="{{checkInLoading}}">
+        {{checkInLoading ? '签到中...' : '签到'}}
+      </button>
+      <view class="checkin-done-badge" wx:else>已签</view>
+    </view>
+  </view>
+
+  <!-- 广告列表 -->
+  <view class="section-title">观看广告赚积分</view>
+  <view class="ad-list">
+    <view class="ad-item card" wx:for="{{ads}}" wx:key="id" data-ad="{{item}}" catchtap="handleWatchAd">
+      <view class="ad-info">
+        <text class="ad-name">{{item.name}}</text>
+        <text class="ad-reward">观看可得 <text class="highlight">{{item.pointsReward}}</text> 积分</text>
+      </view>
+      <view class="ad-action">
+        <button class="btn-primary ad-btn" wx:if="{{item.canClaim}}" size="mini">去观看</button>
+        <button class="btn-primary ad-btn" wx:else disabled size="mini">已领取</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载 -->
+  <view class="loading-container" wx:if="{{isLoading}}"><text>加载中...</text></view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!isLoading && ads.length === 0}}">
+    <text>暂无广告任务</text>
+    <text style="font-size:24rpx;color:#ccc;margin-top:16rpx;">敬请期待</text>
+  </view>
+</view>

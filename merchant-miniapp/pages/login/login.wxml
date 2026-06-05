@@ -1,0 +1,19 @@
+<view class="page">
+  <view class="login-container">
+    <view class="login-icon">🏪</view>
+    <view class="login-title">商家管理</view>
+    <view class="login-desc">会员领物系统 · 商家版</view>
+
+    <button
+      class="btn-primary login-btn"
+      open-type="getPhoneNumber"
+      bindgetphonenumber="handlePhoneLogin"
+      loading="{{isLoggingIn}}"
+      disabled="{{isLoggingIn}}"
+    >
+      {{isLoggingIn ? '登录中...' : '微信手机号登录'}}
+    </button>
+
+    <text class="login-hint">仅限已授权的商家操作员登录</text>
+  </view>
+</view>

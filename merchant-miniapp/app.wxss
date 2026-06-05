@@ -1,0 +1,113 @@
+/* 适老化重设计 — 红金主题（商家版） */
+page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background-color: #FFF8F0;
+  color: #2D1B00;
+  font-size: 32rpx;
+  box-sizing: border-box;
+}
+
+view, scroll-view, swiper { box-sizing: border-box; }
+
+.btn-primary {
+  background: #C41E1E;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 20rpx;
+  height: 90rpx;
+  padding: 0 48rpx;
+  font-size: 34rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 90rpx;
+}
+.btn-primary:active { opacity: 0.85; background: #A01818; }
+.btn-primary[disabled] { background: #CCCCCC; color: #666666; }
+
+.btn-secondary {
+  background: #FFFFFF;
+  color: #C41E1E;
+  border: 2rpx solid #D4A030;
+  border-radius: 20rpx;
+  height: 90rpx;
+  padding: 0 48rpx;
+  font-size: 34rpx;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 90rpx;
+}
+.btn-secondary:active { background: #FFF8F0; }
+
+/* mini buttons */
+.btn-primary[size="mini"], .btn-secondary[size="mini"] {
+  height: 60rpx;
+  line-height: 60rpx;
+  padding: 0 32rpx;
+  font-size: 28rpx;
+  border-radius: 16rpx;
+  display: inline-block;
+}
+
+.card {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 32rpx;
+  margin: 24rpx 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.card-no-margin {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.page-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  padding: 30rpx 24rpx 10rpx;
+  color: #2D1B00;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 200rpx 0;
+  color: #8B7A66;
+  font-size: 30rpx;
+}
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+  color: #8B7A66;
+  font-size: 30rpx;
+}
+
+.tag-vip {
+  display: inline-block;
+  background: #D4A030;
+  color: #C41E1E;
+  font-size: 26rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 24rpx;
+  font-weight: 600;
+}
+
+.tag-regular {
+  display: inline-block;
+  background: #FFF8F0;
+  color: #2D1B00;
+  font-size: 26rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 24rpx;
+}

@@ -1,0 +1,12 @@
+<view class="page">
+  <view class="scan-container">
+    <view class="scan-icon">📷</view>
+    <text class="scan-title">扫码核销</text>
+    <text class="scan-desc">扫描会员出示的领奖码</text>
+    <text class="scan-desc">完成奖品发放核销</text>
+
+    <button class="btn-primary scan-btn" catchtap="handleScan" disabled="{{isScanning}}">
+      {{isScanning ? '扫描中...' : '点击扫码'}}
+    </button>
+  </view>
+</view>

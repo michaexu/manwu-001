@@ -1,0 +1,51 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/activity-detail/activity-detail",
+    "pages/registration-success/registration-success",
+    "pages/points-tasks/points-tasks",
+    "pages/my-participations/my-participations",
+    "pages/qr-code/qr-code",
+    "pages/profile/profile",
+    "pages/points-detail/points-detail",
+    "pages/phone-register/phone-register"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "会员领物",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f5f5"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#C41E1E",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "活动",
+        "iconPath": "images/tab_activity.png",
+        "selectedIconPath": "images/tab_activity_active.png"
+      },
+      {
+        "pagePath": "pages/points-tasks/points-tasks",
+        "text": "赚积分",
+        "iconPath": "images/tab_points.png",
+        "selectedIconPath": "images/tab_points_active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/tab_mine.png",
+        "selectedIconPath": "images/tab_mine_active.png"
+      }
+    ]
+  },
+  "requiredPrivateInfos": [],
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "useExtendedLib": {
+    "weui": true
+  }
+}

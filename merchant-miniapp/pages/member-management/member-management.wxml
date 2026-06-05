@@ -1,0 +1,31 @@
+<view class="page">
+  <view class="page-title">会员管理</view>
+
+  <view class="search-bar">
+    <input class="search-input" placeholder="搜索昵称/手机号" value="{{keyword}}" bindinput="handleSearch" bindconfirm="onSearchConfirm" confirm-type="search" />
+  </view>
+
+  <view class="member-list">
+    <view class="member-item card" wx:for="{{members}}" wx:key="id" data-id="{{item.id}}" catchtap="goToDetail">
+      <block wx:if="{{item.avatarUrl}}">
+        <image class="member-avatar" src="{{item.avatarUrl}}" mode="aspectFill" />
+      </block>
+      <view wx:else class="member-avatar avatar-placeholder-sm">
+        <text class="avatar-placeholder-sm-text">{{item.nickname ? item.nickname.slice(0,1) : 'U'}}</text>
+      </view>
+      <view class="member-info">
+        <text class="member-name">{{item.nickname || '微信用户'}}</text>
+        <text class="{{item.memberType === 'vip' ? 'tag-vip' : 'tag-regular'}}">
+          {{item.memberType === 'vip' ? 'VIP' : '普通'}}
+        </text>
+      </view>
+      <view class="member-stats">
+        <text class="member-points">{{item.pointsBalance || 0}} 积分</text>
+      </view>
+      <text class="member-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="loading-container" wx:if="{{isLoading}}"><text>加载中...</text></view>
+  <view class="empty-state" wx:if="{{!isLoading && members.length === 0}}"><text>暂无会员</text></view>
+</view>

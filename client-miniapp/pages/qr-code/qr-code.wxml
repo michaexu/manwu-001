@@ -1,0 +1,19 @@
+<view class="page">
+  <view class="loading-container" wx:if="{{isLoading}}"><text>加载中...</text></view>
+
+  <block wx:else>
+    <view class="qr-header" wx:if="{{registrationInfo}}">
+      <text class="qr-activity-title">{{registrationInfo.activity.title}}</text>
+      <text class="qr-location">📍 {{registrationInfo.activity.location}}</text>
+    </view>
+
+    <view class="qr-container">
+      <image class="qr-image" src="{{qrDataUrl}}" mode="widthFix" wx:if="{{qrDataUrl}}" />
+      <view class="qr-tip">到店后请出示此二维码给店员核销</view>
+    </view>
+
+    <view class="qr-actions">
+      <button class="btn-secondary" catchtap="handleSave">保存到相册</button>
+    </view>
+  </block>
+</view>

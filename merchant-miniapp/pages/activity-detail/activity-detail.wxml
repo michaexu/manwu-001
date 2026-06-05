@@ -1,0 +1,43 @@
+<view class="page">
+  <view class="page-title">{{activity?.title || '活动详情'}}</view>
+
+  <!-- 活动信息 -->
+  <view class="card" wx:if="{{activity}}">
+    <view class="info-row"><text class="info-label">地点</text><text>{{activity.location}}</text></view>
+    <view class="info-row"><text class="info-label">时间</text><text>{{activity.startTime?.slice(0,16)}} ~ {{activity.endTime?.slice(0,16)}}</text></view>
+    <view class="info-row"><text class="info-label">积分</text><text>{{activity.pointsRequired > 0 ? activity.pointsRequired + ' 积分' : '免费'}}</text></view>
+    <view class="info-row"><text class="info-label">VIP 名额</text><text>{{activity.vipQuota > 0 ? activity.vipQuota : '不限'}}（已用 {{activity.vipCount || 0}}）</text></view>
+    <view class="info-row"><text class="info-label">普通名额</text><text>{{activity.regularQuota > 0 ? activity.regularQuota : '不限'}}（已用 {{activity.regularCount || 0}}）</text></view>
+  </view>
+
+  <!-- 编辑按钮 -->
+  <button class="btn-secondary" style="margin:0 30rpx;" catchtap="goToEdit">编辑活动</button>
+
+  <!-- 参与列表 -->
+  <view class="section-title" style="padding:30rpx 30rpx 20rpx;">参与会员</view>
+
+  <view class="filter-bar">
+    <view class="filter-item {{filterStatus === t.value ? 'active' : ''}}" wx:for="{{tabs}}" wx:key="value" data-status="{{t.value}}" catchtap="filterByStatus">{{t.label}}</view>
+  </view>
+
+  <view class="reg-list">
+    <view class="reg-item card" wx:for="{{registrations}}" wx:key="id">
+      <view class="reg-user">
+        <block wx:if="{{item.member.avatarUrl}}">
+          <image class="reg-avatar" src="{{item.member.avatarUrl}}" mode="aspectFill" />
+        </block>
+        <view wx:else class="reg-avatar avatar-placeholder-xs">
+          <text class="avatar-placeholder-xs-text">U</text>
+        </view>
+        <view class="reg-info">
+          <text class="reg-name">{{item.member.nickname}}</text>
+          <text class="reg-type">{{item.member.memberType === 'vip' ? 'VIP' : '普通'}}</text>
+        </view>
+        <text class="reg-status status-{{item.status}}">{{item.status === 'registered' ? '已报名' : item.status === 'claimed' ? '已核销' : '已取消'}}</text>
+      </view>
+      <text class="reg-time">{{item.createdAt}}</text>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:if="{{!isLoading && registrations.length === 0}}"><text>暂无参与记录</text></view>
+</view>

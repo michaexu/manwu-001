@@ -1,0 +1,51 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/activity-management/activity-management",
+    "pages/activity-create/activity-create",
+    "pages/activity-detail/activity-detail",
+    "pages/scan-verify/scan-verify",
+    "pages/verification-confirm/verification-confirm",
+    "pages/member-management/member-management",
+    "pages/member-detail/member-detail",
+    "pages/admin/vip-management/vip-management",
+    "pages/admin/ad-config/ad-config",
+    "pages/admin/whitelist/whitelist",
+    "pages/dashboard/dashboard"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "商家管理",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f5f5"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#C41E1E",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/activity-management/activity-management",
+        "text": "活动管理",
+        "iconPath": "images/tab_activity.png",
+        "selectedIconPath": "images/tab_activity_active.png"
+      },
+      {
+        "pagePath": "pages/scan-verify/scan-verify",
+        "text": "扫码核销",
+        "iconPath": "images/tab_scan.png",
+        "selectedIconPath": "images/tab_scan_active.png"
+      },
+      {
+        "pagePath": "pages/dashboard/dashboard",
+        "text": "数据看板",
+        "iconPath": "images/tab_dashboard.png",
+        "selectedIconPath": "images/tab_dashboard_active.png"
+      }
+    ]
+  },
+  "requiredPrivateInfos": [],
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

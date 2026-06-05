@@ -1,0 +1,16 @@
+<view class="page">
+  <view class="success-container">
+    <view class="success-icon">✓</view>
+    <view class="success-title">报名成功！</view>
+    <view class="success-desc">
+      <text>{{activityTitle}}</text>
+      <text style="margin-top:12rpx;display:block;">领取地点：{{location}}</text>
+    </view>
+  </view>
+
+  <view class="action-buttons">
+    <button class="btn-primary" catchtap="goToQrCode">查看我的领奖码</button>
+    <button class="btn-secondary" catchtap="goBack">返回活动详情</button>
+    <button class="btn-secondary" style="margin-top:20rpx;" catchtap="goHome">返回首页</button>
+  </view>
+</view>
