@@ -1,0 +1,138 @@
+/** 活动列表样式 */
+.al-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.al-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 32rpx;
+}
+
+.al-title {
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.al-create-btn {
+  font-size: var(--font-sm);
+  color: #FFFFFF;
+  background: var(--color-primary);
+  padding: 12rpx 32rpx;
+  border-radius: var(--radius-full);
+}
+
+.al-list {
+  flex: 1;
+  padding: 0 32rpx;
+}
+
+.al-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: 28rpx;
+  margin-bottom: 16rpx;
+}
+
+.al-card__left {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  flex: 1;
+}
+
+.al-card__icon {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  font-size: 36rpx;
+  flex-shrink: 0;
+}
+
+.al-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.al-card__title {
+  font-size: var(--font-base);
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.al-card__meta {
+  display: flex;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+
+.meta-tag {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  padding: 2rpx 12rpx;
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+}
+
+.al-status {
+  font-size: var(--font-xs);
+  padding: 8rpx 24rpx;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.al-status--on {
+  background: #DCFCE7;
+  color: #16A34A;
+}
+
+.al-status--off {
+  background: var(--color-muted-bg);
+  color: var(--color-text-muted);
+}
+
+.al-loading,
+.al-end {
+  text-align: center;
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  padding: 32rpx;
+}
+
+.al-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 32rpx;
+  gap: 16rpx;
+}
+
+.al-empty__icon {
+  font-size: 96rpx;
+}
+
+.al-empty__text {
+  font-size: var(--font-base);
+  color: var(--color-text-muted);
+}
+
+.al-empty__btn {
+  font-size: var(--font-sm);
+  color: #FFFFFF;
+  background: var(--color-primary);
+  padding: 16rpx 48rpx;
+  border-radius: var(--radius-full);
+  margin-top: 16rpx;
+}

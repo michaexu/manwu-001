@@ -1,0 +1,306 @@
+.container {
+  min-height: 100vh;
+  background: var(--bg-page);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 积分余额卡片 */
+.points-card {
+  background: linear-gradient(135deg, #DC2626, #EF4444);
+  margin: 24rpx;
+  padding: 40rpx 32rpx;
+  border-radius: 24rpx;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 8rpx 32rpx rgba(220,38,38,.25);
+}
+
+.points-label {
+  font-size: 26rpx;
+  opacity: .85;
+  margin-bottom: 8rpx;
+}
+
+.points-value {
+  font-size: 72rpx;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 12rpx;
+  letter-spacing: -2rpx;
+}
+
+.points-hint {
+  font-size: 24rpx;
+  opacity: .7;
+}
+
+/* 广告区域 */
+.ad-section,
+.rules-section,
+.history-section {
+  margin: 0 24rpx 32rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 20rpx;
+}
+
+/* 广告卡片 */
+.ad-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 32rpx 28rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2rpx 16rpx rgba(0,0,0,.06);
+  transition: all .2s;
+  border: 2rpx solid transparent;
+}
+
+.ad-card:active {
+  transform: scale(.98);
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,.04);
+}
+
+.ad-card.watching {
+  border-color: var(--color-primary);
+  background: var(--bg-card);
+}
+
+.ad-icon {
+  font-size: 56rpx;
+  margin-right: 24rpx;
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-page);
+  border-radius: 20rpx;
+}
+
+.ad-info {
+  flex: 1;
+}
+
+.ad-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6rpx;
+}
+
+.ad-reward {
+  display: block;
+  font-size: 26rpx;
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.ad-action {
+  flex-shrink: 0;
+  margin-left: 16rpx;
+}
+
+.ad-btn {
+  display: inline-block;
+  padding: 14rpx 32rpx;
+  background: linear-gradient(135deg, var(--color-primary), #EF4444);
+  color: #fff;
+  font-size: 26rpx;
+  font-weight: 600;
+  border-radius: 40rpx;
+  box-shadow: 0 4rpx 12rpx rgba(220,38,38,.3);
+}
+
+.loading-dot {
+  width: 48rpx;
+  height: 48rpx;
+  border: 3rpx solid var(--border-light);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 进度条 */
+.progress-bar {
+  margin-top: 20rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 20rpx 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,.04);
+}
+
+.progress-text {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  margin-bottom: 10rpx;
+}
+
+.progress-text .highlight {
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 30rpx;
+}
+
+.progress-track {
+  height: 8rpx;
+  background: var(--bg-page);
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 4rpx;
+  transition: width .4s ease;
+}
+
+/* 积分规则 */
+.rules-list {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx 28rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,.04);
+}
+
+.rule-item {
+  display: flex;
+  padding: 10rpx 0;
+  line-height: 1.6;
+}
+
+.rule-dot {
+  color: var(--color-primary);
+  font-weight: 700;
+  margin-right: 12rpx;
+  flex-shrink: 0;
+}
+
+.rule-text {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+/* 历史记录 */
+.history-list {
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,.04);
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 28rpx;
+  border-bottom: 1rpx solid var(--border-light);
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.h-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.h-type {
+  font-size: 28rpx;
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: 4rpx;
+}
+
+.h-time {
+  font-size: 22rpx;
+  color: var(--text-tertiary);
+}
+
+.h-points {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #059669;
+}
+
+/* 底部 */
+.bottom-safe {
+  height: 100rpx;
+}
+
+/* 奖励动画 */
+.reward-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s;
+}
+
+.reward-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.reward-popup {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 60rpx 48rpx;
+  text-align: center;
+  box-shadow: 0 16rpx 48rpx rgba(0,0,0,.15);
+  animation: popIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.reward-icon {
+  font-size: 80rpx;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.reward-text {
+  display: block;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  margin-bottom: 8rpx;
+}
+
+.reward-points {
+  display: block;
+  font-size: 56rpx;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: 12rpx;
+}
+
+.reward-sub {
+  display: block;
+  font-size: 24rpx;
+  color: var(--text-tertiary);
+}

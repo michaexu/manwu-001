@@ -1,0 +1,92 @@
+<!-- 首页 -->
+<view class="page">
+  <!-- 积分卡片 -->
+  <view class="points-card">
+    <view class="points-card__inner">
+      <text class="points-card__label">我的积分</text>
+      <view class="points-card__value-row">
+        <text class="points-card__value">{{points}}</text>
+        <view wx:if="{{vipLevel > 0}}" class="tag tag-gold">
+          <text>👑 VIP{{vipLevel}}</text>
+        </view>
+      </view>
+      <text class="points-card__sub">参与活动兑换心仪礼品</text>
+      <!-- VIP 月度免积分额度 -->
+      <view wx:if="{{vip && vip.monthlyRemaining > 0}}" class="vip-quota-bar">
+        <text class="vip-quota-bar__icon">🎫</text>
+        <text class="vip-quota-bar__text">本月还可免积分参与 <text class="vip-quota-bar__num">{{vip.monthlyRemaining}}</text> 次</text>
+      </view>
+      <view wx:elif="{{vip && vip.monthlyRemaining <= 0}}" class="vip-quota-bar vip-quota-bar--empty">
+        <text class="vip-quota-bar__text">本月免积分次数已用完</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快捷操作 -->
+  <view class="quick-actions">
+    <view class="action-item {{isCheckedIn ? 'action-item--disabled' : ''}}" bindtap="handleCheckin">
+      <text class="action-item__icon">📅</text>
+      <text class="action-item__text">{{isCheckedIn ? '已签到' : '每日签到'}}</text>
+      <text wx:if="{{!isCheckedIn}}" class="action-item__bonus">+{{checkinReward}}</text>
+    </view>
+    <view class="action-item" bindtap="handleWatchAd">
+      <text class="action-item__icon">🎬</text>
+      <text class="action-item__text">看广告赚积分</text>
+      <text class="action-item__bonus">+20</text>
+    </view>
+    <view class="action-item" bindtap="handleScan">
+      <text class="action-item__icon">📷</text>
+      <text class="action-item__text">出示兑换码</text>
+    </view>
+  </view>
+
+  <!-- 活动列表 -->
+  <view class="section">
+    <view class="section__header">
+      <text class="section__title">热门活动</text>
+      <text class="section__more" bindtap="onActivityMore">查看全部 ›</text>
+    </view>
+
+    <view wx:if="{{loading}}" class="loading-state">
+      <view class="skeleton-card" wx:for="{{[1,2,3]}}" wx:key="index"></view>
+    </view>
+
+    <block wx:elif="{{activities.length > 0}}">
+      <view
+        class="activity-card"
+        wx:for="{{activities}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="handleActivityTap"
+      >
+        <view class="activity-card__img" style="background: {{item.color || '#EC4899'}};">
+          <text class="activity-card__emoji">{{item.emoji || '🎁'}}</text>
+        </view>
+        <view class="activity-card__info">
+          <text class="activity-card__title">{{item.title}}</text>
+          <text class="activity-card__desc">{{item.description}}</text>
+          <view class="activity-card__footer">
+            <view class="tag tag-red">
+              <text>⭐ {{item.points_required}} 积分</text>
+            </view>
+            <text class="activity-card__merchant">{{item.merchant_name}}</text>
+          </view>
+          <!-- 名额提示 -->
+          <view class="activity-card__quota">
+            <text wx:if="{{item.vip_quota > 0}}" class="quota-tag quota-tag--vip">
+              👑 VIP剩{{item.vip_quota - item.vip_redeemed_count}}位
+            </text>
+            <text wx:if="{{item.regular_quota > 0}}" class="quota-tag quota-tag--regular">
+              🎫 普通剩{{item.regular_quota - item.regular_redeemed_count}}位
+            </text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <view wx:else class="empty-state">
+      <text class="empty-state__icon">📭</text>
+      <text class="empty-state__text">暂无活动，敬请期待</text>
+    </view>
+  </view>
+</view>

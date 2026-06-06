@@ -1,0 +1,35 @@
+<view class="activity-card" bindtap="onTap">
+  <!-- 图片/emoji区域 -->
+  <view class="card-image" style="background: {{activity.color || '#EC4899'}}15">
+    <image wx:if="{{activity.image_url}}" class="cover-img" src="{{activity.image_url}}" mode="aspectFill" lazy-load />
+    <text wx:else class="cover-emoji">{{activity.emoji || '🎁'}}</text>
+  </view>
+
+  <!-- 内容区域 -->
+  <view class="card-content">
+    <view class="card-header">
+      <text class="card-title">{{activity.title}}</text>
+      <view class="quota-tags" wx:if="{{showQuota}}">
+        <text class="tag vip-tag" wx:if="{{activity.vip_quota > 0}}">
+          👑 VIP剩{{activity.vip_quota - (activity.vip_redeemed_count || 0)}}位
+        </text>
+        <text class="tag regular-tag" wx:if="{{activity.regular_quota > 0}}">
+          🎫 普通剩{{activity.regular_quota - (activity.regular_redeemed_count || 0)}}位
+        </text>
+      </view>
+    </view>
+
+    <view class="card-info">
+      <text class="gift-name">🎁 {{activity.gift_name}}</text>
+      <text class="merchant-name" wx:if="{{activity.merchant_name}}">📍 {{activity.merchant_name}}</text>
+    </view>
+
+    <view class="card-footer">
+      <view class="points-badge">
+        <text class="points-num">{{activity.points_required}}</text>
+        <text class="points-label">积分</text>
+      </view>
+      <text class="card-action">立即兑换 →</text>
+    </view>
+  </view>
+</view>

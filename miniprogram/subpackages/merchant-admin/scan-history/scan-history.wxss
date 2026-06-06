@@ -1,0 +1,127 @@
+/** 核销记录样式 */
+.sh-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.sh-list {
+  height: 100vh;
+  padding: 24rpx 32rpx;
+  box-sizing: border-box;
+}
+
+.sh-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: 28rpx;
+  margin-bottom: 16rpx;
+}
+
+.sh-card__left {
+  display: flex;
+  align-items: flex-start;
+  gap: 20rpx;
+  flex: 1;
+}
+
+.sh-card__avatar {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  border-radius: var(--radius-full);
+  font-size: 36rpx;
+  flex-shrink: 0;
+}
+
+.sh-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.sh-card__user {
+  font-size: var(--font-base);
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.sh-card__activity {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.sh-card__tags {
+  display: flex;
+  gap: 8rpx;
+  margin-top: 4rpx;
+}
+
+.sh-tag {
+  font-size: 20rpx;
+  padding: 2rpx 12rpx;
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+}
+
+.sh-tag--code {
+  font-family: monospace;
+  color: var(--color-primary);
+}
+
+.sh-card__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8rpx;
+  flex-shrink: 0;
+}
+
+.sh-card__time {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+.sh-badge {
+  font-size: var(--font-xs);
+  padding: 4rpx 16rpx;
+  background: var(--color-muted-bg);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-full);
+}
+
+.sh-badge--vip {
+  background: #FEF3C7;
+  color: #D97706;
+}
+
+.sh-loading,
+.sh-end {
+  text-align: center;
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  padding: 32rpx;
+}
+
+.sh-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 32rpx;
+  gap: 16rpx;
+}
+
+.sh-empty__icon {
+  font-size: 96rpx;
+}
+
+.sh-empty__text {
+  font-size: var(--font-base);
+  color: var(--color-text-muted);
+}

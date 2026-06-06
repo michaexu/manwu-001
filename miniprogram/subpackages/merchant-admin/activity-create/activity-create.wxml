@@ -1,0 +1,140 @@
+<!-- 商家端 - 活动创建/编辑 -->
+<view class="page">
+  <scroll-view scroll-y class="form-scroll">
+    <!-- 基础信息 -->
+    <view class="section">
+      <text class="section__title">📋 基础信息</text>
+
+      <view class="form-group">
+        <text class="form-label required">活动标题</text>
+        <input class="form-input" placeholder="输入活动标题" value="{{form.title}}" data-field="title" bindinput="handleInput" maxlength="100"/>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label required">活动描述</text>
+        <textarea class="form-textarea" placeholder="描述活动内容，吸引用户参与" value="{{form.description}}" data-field="description" bindinput="handleInput" maxlength="500" auto-height/>
+      </view>
+
+      <!-- 图标和颜色 -->
+      <view class="form-group">
+        <text class="form-label">活动图标</text>
+        <view class="emoji-grid">
+          <view
+            wx:for="{{emojiOptions}}"
+            wx:key="*this"
+            class="emoji-item {{form.emoji === item ? 'emoji-item--active' : ''}}"
+            data-emoji="{{item}}"
+            bindtap="handleEmojiSelect"
+          >{{item}}</view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">主题颜色</text>
+        <view class="color-grid">
+          <view
+            wx:for="{{colorOptions}}"
+            wx:key="value"
+            class="color-item {{form.color === item.value ? 'color-item--active' : ''}}"
+            style="background: {{item.value}};"
+            data-color="{{item.value}}"
+            bindtap="handleColorSelect"
+          ></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 礼品信息 -->
+    <view class="section">
+      <text class="section__title">🎁 礼品信息</text>
+
+      <view class="form-group">
+        <text class="form-label required">礼品名称</text>
+        <input class="form-input" placeholder="例如：星巴克拿铁兑换券" value="{{form.gift_name}}" data-field="gift_name" bindinput="handleInput" maxlength="100"/>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">礼品规格</text>
+        <input class="form-input" placeholder="例如：大杯/355ml" value="{{form.gift_spec}}" data-field="gift_spec" bindinput="handleInput" maxlength="200"/>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">礼品介绍</text>
+        <textarea class="form-textarea" placeholder="详细介绍礼品内容和价值" value="{{form.gift_description}}" data-field="gift_description" bindinput="handleInput" maxlength="1000" auto-height/>
+      </view>
+    </view>
+
+    <!-- 参与条件 -->
+    <view class="section">
+      <text class="section__title">📊 参与条件</text>
+
+      <view class="form-group">
+        <text class="form-label required">所需积分</text>
+        <view class="form-input-row">
+          <input class="form-input form-input--number" type="number" placeholder="100" value="{{form.points_required}}" data-field="points_required" bindinput="handleNumberInput"/>
+          <text class="form-suffix">积分</text>
+        </view>
+        <text class="form-hint">普通用户参与活动需要消耗的积分，VIP 优先使用月度免积分额度</text>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">👑 VIP 名额</text>
+        <view class="form-input-row">
+          <input class="form-input form-input--number" type="number" placeholder="0" value="{{form.vip_quota}}" data-field="vip_quota" bindinput="handleNumberInput"/>
+          <text class="form-suffix">位</text>
+        </view>
+        <text class="form-hint">VIP 用户专属参与名额，0 表示不限制</text>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">🎫 普通用户名额</text>
+        <view class="form-input-row">
+          <input class="form-input form-input--number" type="number" placeholder="0" value="{{form.regular_quota}}" data-field="regular_quota" bindinput="handleNumberInput"/>
+          <text class="form-suffix">位</text>
+        </view>
+        <text class="form-hint">普通用户参与名额，0 表示不限制</text>
+      </view>
+    </view>
+
+    <!-- 商家介绍 -->
+    <view class="section">
+      <text class="section__title">🏪 商家介绍</text>
+
+      <view class="form-group">
+        <text class="form-label">商家介绍（可覆盖默认）</text>
+        <textarea class="form-textarea" placeholder="介绍你的商家，让用户更了解你" value="{{form.merchant_description}}" data-field="merchant_description" bindinput="handleInput" maxlength="500" auto-height/>
+      </view>
+    </view>
+
+    <!-- 活动时间 -->
+    <view class="section">
+      <text class="section__title">📅 活动时间</text>
+
+      <view class="form-group">
+        <text class="form-label">开始时间</text>
+        <picker mode="date" value="{{form.start_time}}" data-field="start_time" bindchange="handleDateChange">
+          <view class="form-picker">
+            {{form.start_time || '选择开始时间（可选）'}}
+          </view>
+        </picker>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">结束时间</text>
+        <picker mode="date" value="{{form.end_time}}" data-field="end_time" bindchange="handleDateChange">
+          <view class="form-picker">
+            {{form.end_time || '选择结束时间（可选）'}}
+          </view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 提交区域 -->
+    <view class="submit-area">
+      <button class="submit-btn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="handleSubmit">
+        {{submitting ? '提交中...' : (isEdit ? '保存修改' : '发布活动')}}
+      </button>
+      <text class="submit-hint">发布后活动将立即上线，用户即可参与</text>
+    </view>
+  </scroll-view>
+</view>

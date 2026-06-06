@@ -1,0 +1,78 @@
+<!--
+  积分明细页
+  设计参照 Ardot 8:119
+-->
+<view class="points-page">
+  <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="onBack">
+      <text class="nav-back__icon">&larr;</text>
+    </view>
+    <text class="nav-title">积分明细</text>
+  </view>
+
+  <scroll-view
+    class="points-content"
+    scroll-y
+    enhanced
+    show-scrollbar="{{false}}"
+    bindscrolltolower="onLoadMore"
+  >
+    <!-- 余额卡片 -->
+    <view class="balance-card">
+      <text class="bal-label">当前积分余额</text>
+      <text class="bal-value">{{balance}}</text>
+    </view>
+
+    <!-- 筛选 Tab -->
+    <view class="filter-tabs">
+      <view
+        class="filter-tab {{activeTab === 'all' ? 'filter-tab--active' : ''}}"
+        data-tab="all"
+        bindtap="onTabChange"
+      >全部</view>
+      <view
+        class="filter-tab {{activeTab === 'income' ? 'filter-tab--active' : ''}}"
+        data-tab="income"
+        bindtap="onTabChange"
+      >收入</view>
+      <view
+        class="filter-tab {{activeTab === 'expense' ? 'filter-tab--active' : ''}}"
+        data-tab="expense"
+        bindtap="onTabChange"
+      >支出</view>
+    </view>
+
+    <!-- 交易列表（按日期分组） -->
+    <block wx:for="{{groupedRecords}}" wx:key="date">
+      <text class="date-label">{{item.date}}</text>
+
+      <view class="tx-item" wx:for="{{item.items}}" wx:for-item="tx" wx:key="id">
+        <view class="tx-icon-wrap">
+          <text class="tx-icon">{{tx.type === 'checkin' ? '📅' : tx.type === 'ad' ? '📺' : '🎁'}}</text>
+        </view>
+        <view class="tx-info">
+          <text class="tx-name">{{tx.type === 'checkin' ? '每日签到' : tx.type === 'ad' ? '观看广告' : tx.description || '积分变动'}}</text>
+          <text class="tx-time">{{tx.created_at}}</text>
+        </view>
+        <text class="tx-pts {{tx.points > 0 ? 'tx-pts--plus' : 'tx-pts--minus'}}">
+          {{tx.points > 0 ? '+' : ''}}{{tx.points}}
+        </text>
+      </view>
+    </block>
+
+    <!-- 加载更多 -->
+    <view wx:if="{{loading}}" class="load-more">加载中...</view>
+    <view wx:elif="{{!hasMore && records.length > 0}}" class="load-more load-more--end">— 没有更多了 —</view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{!loading && records.length === 0}}" class="empty-state">
+      <text class="empty-icon">📭</text>
+      <text class="empty-text">暂无积分记录</text>
+    </view>
+
+    <view class="safe-bottom" style="height: 64rpx;"></view>
+  </scroll-view>
+</view>

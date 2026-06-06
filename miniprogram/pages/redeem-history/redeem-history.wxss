@@ -1,0 +1,165 @@
+.container {
+  min-height: 100vh;
+  background: var(--bg-page);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Tab栏 */
+.tab-bar {
+  display: flex;
+  white-space: nowrap;
+  padding: 16rpx 24rpx;
+  background: #fff;
+  border-bottom: 1rpx solid var(--border-light);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tab-item {
+  display: inline-block;
+  padding: 12rpx 32rpx;
+  margin-right: 16rpx;
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  border-radius: 40rpx;
+  background: var(--bg-card);
+  transition: all .2s;
+}
+
+.tab-item.active {
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 记录卡片 */
+.record-list {
+  padding: 24rpx;
+}
+
+.record-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,.04);
+  transition: transform .15s;
+}
+
+.record-card:active {
+  transform: scale(.98);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.activity-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-badge {
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-left: 16rpx;
+}
+
+.card-body {
+  border-top: 1rpx solid var(--border-light);
+  border-bottom: 1rpx solid var(--border-light);
+  padding: 16rpx 0;
+  margin-bottom: 12rpx;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6rpx 0;
+}
+
+.info-row .label {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.info-row .value {
+  font-size: 26rpx;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.info-row .value.code {
+  font-family: monospace;
+  letter-spacing: 2rpx;
+  color: var(--color-primary);
+}
+
+.info-row .value.points {
+  color: var(--color-accent);
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.time {
+  font-size: 22rpx;
+  color: var(--text-tertiary);
+}
+
+.arrow {
+  font-size: 24rpx;
+  color: var(--color-primary);
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  font-size: 30rpx;
+  color: var(--text-secondary);
+  margin-bottom: 8rpx;
+}
+
+.empty-hint {
+  font-size: 26rpx;
+  color: var(--text-tertiary);
+}
+
+/* 加载更多 */
+.load-more {
+  text-align: center;
+  padding: 32rpx 0;
+  font-size: 26rpx;
+  color: var(--text-tertiary);
+}
+
+.no-more {
+  color: var(--text-tertiary);
+}

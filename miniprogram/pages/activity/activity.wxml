@@ -1,0 +1,141 @@
+<!-- 活动详情页 -->
+<view class="page">
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading-state">
+    <view class="skeleton-banner"></view>
+    <view class="skeleton-line"></view>
+    <view class="skeleton-line skeleton-line--short"></view>
+  </view>
+
+  <block wx:elif="{{activity}}">
+    <!-- 活动头图 -->
+    <view class="hero" style="background: {{activity.color || '#DC2626'}};">
+      <text class="hero__emoji">{{activity.emoji || '🎁'}}</text>
+      <text class="hero__title">{{activity.title}}</text>
+      <text class="hero__desc">{{activity.description}}</text>
+    </view>
+
+    <!-- 礼品信息卡片 -->
+    <view class="info-card">
+      <view class="info-card__header">
+        <text class="info-card__icon">🎁</text>
+        <text class="info-card__title">礼品详情</text>
+      </view>
+      <view class="info-card__body">
+        <view class="info-row">
+          <text class="info-row__label">礼品名称</text>
+          <text class="info-row__value">{{activity.gift_name}}</text>
+        </view>
+        <view wx:if="{{activity.gift_spec}}" class="info-row">
+          <text class="info-row__label">规格</text>
+          <text class="info-row__value">{{activity.gift_spec}}</text>
+        </view>
+        <view wx:if="{{activity.gift_description}}" class="info-row info-row--block">
+          <text class="info-row__label">介绍</text>
+          <text class="info-row__value">{{activity.gift_description}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 商家信息卡片 -->
+    <view class="info-card">
+      <view class="info-card__header">
+        <text class="info-card__icon">🏪</text>
+        <text class="info-card__title">商家信息</text>
+      </view>
+      <view class="info-card__body">
+        <view class="info-row">
+          <text class="info-row__label">商家名称</text>
+          <text class="info-row__value">{{activity.merchant_name}}</text>
+        </view>
+        <view wx:if="{{activity.merchant_address}}" class="info-row">
+          <text class="info-row__label">地址</text>
+          <text class="info-row__value">{{activity.merchant_address}}</text>
+        </view>
+        <view wx:if="{{activity.merchant_description}}" class="info-row info-row--block">
+          <text class="info-row__label">商家介绍</text>
+          <text class="info-row__value">{{activity.merchant_description}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 名额与积分信息 -->
+    <view class="info-card">
+      <view class="info-card__header">
+        <text class="info-card__icon">📊</text>
+        <text class="info-card__title">参与条件</text>
+      </view>
+      <view class="info-card__body">
+        <!-- 所需积分 -->
+        <view class="info-row">
+          <text class="info-row__label">所需积分</text>
+          <text class="info-row__value info-row__value--points">⭐ {{activity.points_required}} 积分</text>
+        </view>
+
+        <!-- VIP 名额 -->
+        <view wx:if="{{activity.vip_quota > 0}}" class="info-row">
+          <text class="info-row__label">👑 VIP名额</text>
+          <text class="info-row__value">
+            <text class="quota-count {{activity.vip_redeemed_count >= activity.vip_quota ? 'quota-count--full' : ''}}">
+              {{activity.vip_redeemed_count || 0}}/{{activity.vip_quota}}
+            </text>
+          </text>
+        </view>
+
+        <!-- 普通用户名额 -->
+        <view wx:if="{{activity.regular_quota > 0}}" class="info-row">
+          <text class="info-row__label">🎫 普通名额</text>
+          <text class="info-row__value">
+            <text class="quota-count {{activity.regular_redeemed_count >= activity.regular_quota ? 'quota-count--full' : ''}}">
+              {{activity.regular_redeemed_count || 0}}/{{activity.regular_quota}}
+            </text>
+          </text>
+        </view>
+
+        <!-- VIP 免积分提示 -->
+        <view wx:if="{{isVip}}" class="vip-tip">
+          <text wx:if="{{vipMonthlyRemaining > 0}}">
+            🎫 您是VIP用户，本月还可免积分参与 <text class="vip-tip__num">{{vipMonthlyRemaining}}</text> 次
+          </text>
+          <text wx:else class="vip-tip--empty">
+            本月免积分次数已用完，参与将消耗积分
+          </text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部操作栏 -->
+    <view class="bottom-bar">
+      <view class="bottom-bar__info">
+        <text class="bottom-bar__label">{{getRedeemLabel()}}</text>
+        <text wx:if="{{activity.start_time}}" class="bottom-bar__time">
+          {{activity.start_time}} ~ {{activity.end_time}}
+        </text>
+      </view>
+
+      <!-- 兑换按钮 -->
+      <button
+        wx:if="{{!redeemed}}"
+        class="redeem-btn {{canRedeem() ? '' : 'redeem-btn--disabled'}}"
+        disabled="{{!canRedeem() || redeeming}}"
+        loading="{{redeeming}}"
+        bindtap="handleRedeem"
+      >
+        {{redeeming ? '处理中...' : '立即参与'}}
+      </button>
+
+      <!-- 已兑换操作 -->
+      <view wx:else class="redeemed-actions">
+        <button class="redeem-btn redeem-btn--code" bindtap="handleViewCode">
+          🎫 查看兑换码
+        </button>
+      </view>
+    </view>
+  </block>
+
+  <!-- 错误状态 -->
+  <view wx:if="{{!loading && !activity}}" class="empty-state">
+    <text class="empty-state__icon">📭</text>
+    <text class="empty-state__text">活动不存在或已下架</text>
+  </view>
+</view>

@@ -1,0 +1,211 @@
+/**
+ * 登录页样式 - 设计参照 Ardot 8:2
+ */
+.login-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+/* ===== 主内容区 ===== */
+.login-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32rpx 32rpx 48rpx;
+  gap: 24rpx;
+}
+
+/* ===== Logo 区域 ===== */
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24rpx;
+  padding: 40rpx 0 20rpx;
+}
+
+.logo-icon {
+  width: 144rpx;
+  height: 144rpx;
+  background: var(--color-primary);
+  border-radius: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-emoji {
+  font-size: 72rpx;
+}
+
+.welcome-text {
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.subtitle {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ===== 手机号输入卡片 ===== */
+.phone-card {
+  width: 100%;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: 0 40rpx;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  height: 88rpx;
+  gap: 24rpx;
+}
+
+.input-prefix {
+  font-size: var(--font-base);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.input-field {
+  flex: 1;
+  font-size: var(--font-base);
+  color: var(--color-text-primary);
+}
+
+.input-field--sms {
+  max-width: 200rpx;
+}
+
+.input-divider {
+  height: 1rpx;
+  background: var(--color-border);
+}
+
+/* ===== 验证码按钮 ===== */
+.sms-btn {
+  padding: 12rpx 28rpx;
+  background: var(--color-primary);
+  color: #FFFFFF;
+  font-size: var(--font-xs);
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.sms-btn--counting {
+  background: var(--color-text-muted);
+}
+
+/* ===== 协议勾选 ===== */
+.agree-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  width: 100%;
+}
+
+.checkbox {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 8rpx;
+  border: 2rpx solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.checkbox--checked {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.checkbox-icon {
+  color: #FFFFFF;
+  font-size: 24rpx;
+}
+
+.agree-text {
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.agree-link {
+  color: var(--color-primary);
+}
+
+/* ===== 登录按钮 ===== */
+.login-btn {
+  width: 100%;
+  height: 104rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  color: #FFFFFF;
+  font-size: var(--font-lg);
+  font-weight: 700;
+  border-radius: var(--radius-full);
+}
+
+.login-btn:active {
+  opacity: 0.85;
+}
+
+.login-btn--loading {
+  opacity: 0.7;
+}
+
+/* ===== 分割线 ===== */
+.divider-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 24rpx;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1rpx;
+  background: #E2E8F0;
+}
+
+.divider-or {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+/* ===== 微信一键登录 ===== */
+.wechat-btn {
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 24rpx 48rpx;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-full);
+  border: none;
+  font-size: var(--font-sm);
+  color: var(--color-text-primary);
+  font-weight: 500;
+  margin-top: 0;
+  line-height: 1;
+}
+
+.wechat-btn::after {
+  border: none;
+}
+
+.wechat-icon {
+  font-size: 36rpx;
+}
+
+.wechat-text {
+  font-size: var(--font-sm);
+}

@@ -1,0 +1,236 @@
+/**
+ * 扫码确认页样式 - 设计参照 Ardot 2:149
+ */
+.scan-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== 顶部红色区域 ===== */
+.scan-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx 32rpx 48rpx;
+  background: var(--color-primary);
+  gap: 8rpx;
+}
+
+.scan-title {
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.scan-sub {
+  font-size: var(--font-sm);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ===== 扫码触发 ===== */
+.scan-trigger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 32rpx;
+  gap: 24rpx;
+}
+
+.scan-trigger__icon {
+  width: 160rpx;
+  height: 160rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.scan-emoji {
+  font-size: 80rpx;
+}
+
+.scan-trigger__text {
+  font-size: var(--font-base);
+  color: var(--color-text-secondary);
+}
+
+/* ===== 内容区 ===== */
+.scan-content {
+  flex: 1;
+  padding: 32rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 32rpx;
+}
+
+/* ===== 用户卡片 ===== */
+.user-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: 40rpx 32rpx 32rpx;
+  gap: 12rpx;
+}
+
+.user-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  background: var(--color-bg);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-emoji {
+  font-size: 64rpx;
+}
+
+.user-name {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.user-phone {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ===== 兑换信息卡片 ===== */
+.redeem-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: 32rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.redeem-title {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 8rpx;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.info-label {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.info-value {
+  font-size: var(--font-sm);
+  color: var(--color-text-primary);
+  font-weight: 500;
+  text-align: right;
+  max-width: 360rpx;
+}
+
+.info-value--code {
+  font-family: monospace;
+  background: var(--color-bg);
+  padding: 4rpx 16rpx;
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
+  font-weight: 700;
+  letter-spacing: 2rpx;
+}
+
+.info-value--pts {
+  color: var(--color-primary);
+}
+
+/* 兑换方式标签 */
+.redeem-type-tag {
+  font-size: var(--font-xs);
+  padding: 4rpx 20rpx;
+  border-radius: var(--radius-full);
+  background: var(--color-muted-bg);
+  color: var(--color-text-secondary);
+}
+
+.redeem-type-tag--vip {
+  background: #FEF3C7;
+  color: #D97706;
+}
+
+/* ===== 确认按钮 ===== */
+.confirm-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 104rpx;
+  background: var(--color-primary);
+  color: #FFFFFF;
+  font-size: var(--font-lg);
+  font-weight: 700;
+  border-radius: var(--radius-full);
+}
+
+.confirm-btn--done {
+  background: var(--color-success);
+}
+
+/* ===== 取消按钮 ===== */
+.cancel-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96rpx;
+  background: var(--color-bg-card);
+  color: var(--color-primary);
+  font-size: var(--font-md);
+  font-weight: 500;
+  border-radius: var(--radius-full);
+}
+
+/* ===== 商家备注 ===== */
+.merchant-note {
+  text-align: center;
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  padding: 16rpx 0;
+}
+
+/* ===== 加载 & 错误 ===== */
+.loading-box,
+.error-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+  padding: 120rpx 32rpx;
+  color: var(--color-text-secondary);
+}
+
+.error-icon {
+  font-size: 96rpx;
+}
+
+.error-text {
+  font-size: var(--font-base);
+  color: var(--color-text-secondary);
+}
+
+.retry-btn {
+  padding: 16rpx 48rpx;
+  background: var(--color-primary);
+  color: #FFFFFF;
+  border-radius: var(--radius-full);
+  font-size: var(--font-sm);
+}

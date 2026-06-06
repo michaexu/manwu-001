@@ -1,0 +1,192 @@
+/**
+ * 积分明细页样式 - 设计参照 Ardot 8:119
+ */
+.points-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== 导航栏 ===== */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 32rpx;
+  gap: 24rpx;
+}
+
+.nav-back {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-card);
+}
+
+.nav-back__icon {
+  font-size: var(--font-xl);
+  color: var(--color-text-primary);
+}
+
+.nav-title {
+  flex: 1;
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+/* ===== 内容区 ===== */
+.points-content {
+  flex: 1;
+  padding: 0 32rpx;
+}
+
+/* ===== 余额卡片 ===== */
+.balance-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx;
+  background: var(--color-primary);
+  border-radius: var(--radius-md);
+  margin-bottom: 32rpx;
+  gap: 8rpx;
+}
+
+.bal-label {
+  font-size: var(--font-sm);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.bal-value {
+  font-size: 72rpx;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 2rpx;
+}
+
+/* ===== 筛选 Tab ===== */
+.filter-tabs {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.filter-tab {
+  flex: 1;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-full);
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.filter-tab--active {
+  background: var(--color-primary);
+  color: #FFFFFF;
+}
+
+/* ===== 日期标签 ===== */
+.date-label {
+  display: block;
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  font-weight: 500;
+  padding: 20rpx 0 12rpx;
+}
+
+/* ===== 交易项 ===== */
+.tx-item {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  background: var(--color-bg-card);
+  border-radius: 20rpx;
+  padding: 28rpx 28rpx;
+  margin-bottom: 12rpx;
+}
+
+.tx-icon-wrap {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.tx-icon {
+  font-size: 36rpx;
+}
+
+.tx-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.tx-name {
+  font-size: var(--font-base);
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.tx-time {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+.tx-pts {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.tx-pts--plus {
+  color: var(--color-primary);
+}
+
+.tx-pts--minus {
+  color: var(--color-text-secondary);
+}
+
+/* ===== 加载更多 ===== */
+.load-more {
+  text-align: center;
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  padding: 24rpx 0;
+}
+
+.load-more--end {
+  color: var(--color-border);
+}
+
+/* ===== 空状态 ===== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0;
+  gap: 16rpx;
+}
+
+.empty-icon {
+  font-size: 96rpx;
+}
+
+.empty-text {
+  font-size: var(--font-base);
+  color: var(--color-text-muted);
+}

@@ -1,0 +1,152 @@
+/**
+ * 兑换码展示页样式 - 设计参照 Ardot 2:176
+ */
+.qr-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== 导航栏 ===== */
+.qr-nav {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  gap: 24rpx;
+}
+
+.qr-nav__back {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-full);
+  font-size: var(--font-xl);
+  color: var(--color-text-primary);
+}
+
+.qr-nav__title {
+  flex: 1;
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  text-align: center;
+  margin-right: 64rpx;
+}
+
+/* ===== 内容区 ===== */
+.qr-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 32rpx;
+  gap: 40rpx;
+}
+
+/* ===== 兑换码卡片 ===== */
+.qr-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: 48rpx 40rpx 36rpx;
+  gap: 24rpx;
+}
+
+.qr-gift-icon {
+  font-size: 80rpx;
+}
+
+.qr-act-name {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+/* 二维码占位区 */
+.qr-code-area {
+  width: 360rpx;
+  height: 360rpx;
+  background: #F0F2F2;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-code-area__tip {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+}
+
+/* 兑换码文字 */
+.qr-code-value {
+  display: flex;
+  gap: 12rpx;
+}
+
+.qr-segment {
+  font-family: monospace;
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: 4rpx;
+}
+
+/* 底部行 */
+.qr-bottom-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 16rpx 24rpx;
+  background: var(--color-bg);
+  border-radius: var(--radius-full);
+}
+
+.qr-type-tag {
+  font-size: var(--font-xs);
+  padding: 4rpx 16rpx;
+  background: var(--color-muted-bg);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-full);
+}
+
+.qr-type-tag--vip {
+  background: #FEF3C7;
+  color: #D97706;
+}
+
+.qr-points {
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+}
+
+/* ===== 使用提示 ===== */
+.qr-tips {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: 32rpx;
+  gap: 12rpx;
+}
+
+.qr-tips__title {
+  font-size: var(--font-sm);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 4rpx;
+}
+
+.qr-tips__item {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}

@@ -1,0 +1,94 @@
+<!--
+  扫码确认页（商家端）
+  设计参照 Ardot 2:149
+-->
+<view class="scan-page">
+  <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+
+  <!-- 顶部红色区域 -->
+  <view class="scan-header">
+    <text class="scan-title">扫码确认</text>
+    <text class="scan-sub">请确认用户兑换信息</text>
+  </view>
+
+  <!-- 扫码按钮（初始态） -->
+  <view wx:if="{{!redemption && !loading && !error}}" class="scan-trigger" bindtap="onScanCode">
+    <view class="scan-trigger__icon">
+      <text class="scan-emoji">📷</text>
+    </view>
+    <text class="scan-trigger__text">点击扫描用户兑换码</text>
+  </view>
+
+  <!-- 加载态 -->
+  <view wx:if="{{loading}}" class="loading-box">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 错误态 -->
+  <view wx:if="{{error}}" class="error-box">
+    <text class="error-icon">⚠️</text>
+    <text class="error-text">{{error}}</text>
+    <view class="retry-btn" bindtap="onScanCode">重新扫码</view>
+  </view>
+
+  <!-- 兑换详情 -->
+  <view wx:if="{{redemption}}" class="scan-content">
+    <!-- 用户信息卡片 -->
+    <view class="user-card">
+      <view class="user-avatar">
+        <text class="avatar-emoji">👤</text>
+      </view>
+      <text class="user-name">{{user.nickName || '用户'}}</text>
+      <text class="user-phone">{{user.phone || '未绑定手机'}}</text>
+    </view>
+
+    <!-- 兑换信息卡片 -->
+    <view class="redeem-card">
+      <text class="redeem-title">兑换信息</text>
+
+      <view class="info-row">
+        <text class="info-label">活动</text>
+        <text class="info-value">{{activity.title}}</text>
+      </view>
+
+      <view class="info-row">
+        <text class="info-label">礼品</text>
+        <text class="info-value">{{activity.gift_name || '--'}}</text>
+      </view>
+
+      <view class="info-row">
+        <text class="info-label">兑换码</text>
+        <text class="info-value info-value--code">{{redemption.code}}</text>
+      </view>
+
+      <view class="info-row">
+        <text class="info-label">兑换方式</text>
+        <view class="redeem-type-tag {{redemption.redeem_type === 'vip_free' ? 'redeem-type-tag--vip' : ''}}">
+          {{redemption.redeem_type === 'vip_free' ? 'VIP免积分' : '积分兑换'}}
+        </view>
+      </view>
+
+      <view wx:if="{{redemption.points_spent > 0}}" class="info-row">
+        <text class="info-label">消耗积分</text>
+        <text class="info-value info-value--pts">{{redemption.points_spent}} 积分</text>
+      </view>
+    </view>
+
+    <!-- 确认按钮 -->
+    <view
+      class="confirm-btn {{confirmed ? 'confirm-btn--done' : ''}}"
+      bindtap="onConfirm"
+    >
+      <text wx:if="{{!confirmed}}">确认领取，核销兑换</text>
+      <text wx:else>已核销 ✓</text>
+    </view>
+
+    <!-- 取消按钮 -->
+    <view wx:if="{{!confirmed}}" class="cancel-btn" bindtap="onCancel">
+      <text>取消</text>
+    </view>
+
+    <!-- 商家备注 -->
+    <text wx:if="{{merchantName}}" class="merchant-note">商家「{{merchantName}}」确认核销</text>
+  </view>
+</view>

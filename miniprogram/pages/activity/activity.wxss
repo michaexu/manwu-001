@@ -1,0 +1,258 @@
+/* 活动详情页样式 */
+.page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding-bottom: 180rpx;
+}
+
+/* 活动头图 */
+.hero {
+  padding: 60rpx 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+  color: #FFFFFF;
+}
+
+.hero__emoji {
+  font-size: 80rpx;
+}
+
+.hero__title {
+  font-size: var(--font-2xl);
+  font-weight: 800;
+  text-align: center;
+}
+
+.hero__desc {
+  font-size: var(--font-sm);
+  opacity: 0.85;
+  text-align: center;
+  max-width: 500rpx;
+}
+
+/* 信息卡片 */
+.info-card {
+  margin: 24rpx 32rpx;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.info-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 28rpx 28rpx 0;
+}
+
+.info-card__icon {
+  font-size: 36rpx;
+}
+
+.info-card__title {
+  font-size: var(--font-md);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.info-card__body {
+  padding: 20rpx 28rpx 28rpx;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid var(--color-border);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row--block {
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.info-row__label {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+  min-width: 120rpx;
+}
+
+.info-row__value {
+  font-size: var(--font-sm);
+  color: var(--color-text-primary);
+  font-weight: 500;
+  text-align: right;
+  flex: 1;
+}
+
+.info-row--block .info-row__value {
+  text-align: left;
+  color: var(--color-text-secondary);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.info-row__value--points {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+/* 名额统计 */
+.quota-count {
+  font-size: var(--font-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.quota-count--full {
+  color: #DC2626;
+}
+
+/* VIP 提示 */
+.vip-tip {
+  margin-top: 16rpx;
+  padding: 16rpx 20rpx;
+  background: #FEF3C7;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-xs);
+  color: #D97706;
+  text-align: center;
+}
+
+.vip-tip__num {
+  font-weight: 700;
+  font-size: var(--font-sm);
+}
+
+.vip-tip--empty {
+  color: #9CA3AF;
+}
+
+/* 底部操作栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-bg-card);
+  padding: 24rpx 32rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24rpx;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
+}
+
+.bottom-bar__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.bottom-bar__label {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.bottom-bar__time {
+  font-size: 20rpx;
+  color: var(--color-text-muted);
+}
+
+/* 兑换按钮 */
+.redeem-btn {
+  height: 88rpx;
+  padding: 0 40rpx;
+  background: linear-gradient(135deg, #DC2626, #EC4899);
+  color: #FFFFFF;
+  font-size: var(--font-md);
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.redeem-btn::after {
+  border: none;
+}
+
+.redeem-btn:active {
+  opacity: 0.85;
+}
+
+.redeem-btn--disabled {
+  background: #D1D5DB;
+  color: #9CA3AF;
+}
+
+.redeem-btn--code {
+  background: linear-gradient(135deg, #D97706, #F59E0B);
+}
+
+.redeemed-actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+/* 骨架屏 */
+.loading-state {
+  padding: 32rpx;
+}
+
+.skeleton-banner {
+  height: 320rpx;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-lg);
+}
+
+.skeleton-line {
+  height: 32rpx;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8rpx;
+  margin-top: 24rpx;
+}
+
+.skeleton-line--short {
+  width: 60%;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 200rpx 0;
+}
+
+.empty-state__icon {
+  font-size: 80rpx;
+  margin-bottom: 16rpx;
+}
+
+.empty-state__text {
+  font-size: var(--font-base);
+  color: var(--color-text-muted);
+}

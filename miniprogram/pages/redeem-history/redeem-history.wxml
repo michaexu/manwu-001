@@ -1,0 +1,59 @@
+<view class="container">
+  <!-- 状态筛选 -->
+  <scroll-view class="tab-bar" scroll-x enable-flex>
+    <view
+      wx:for="{{tabs}}"
+      wx:key="key"
+      class="tab-item {{activeTab === item.key ? 'active' : ''}}"
+      data-tab="{{item.key}}"
+      bindtap="onTabChange"
+    >{{item.label}}</view>
+  </scroll-view>
+
+  <!-- 记录列表 -->
+  <view class="record-list">
+    <block wx:for="{{records}}" wx:key="id">
+      <view class="record-card" data-code="{{item.code}}" bindtap="onTapRecord">
+        <view class="card-header">
+          <text class="activity-title">{{item.activity_title || '活动礼品'}}</text>
+          <view class="status-badge" style="background:{{statusMap[item.status].bg}}; color:{{statusMap[item.status].color}}">
+            {{statusMap[item.status].label}}
+          </view>
+        </view>
+        <view class="card-body">
+          <view class="info-row">
+            <text class="label">兑换码</text>
+            <text class="value code">{{item.code}}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">消耗积分</text>
+            <text class="value points">{{item.redeem_type === 'vip_free' ? 'VIP免费' : '-' + item.points_spent + '积分'}}</text>
+          </view>
+          <view class="info-row" wx:if="{{item.merchant_name}}">
+            <text class="label">核销商家</text>
+            <text class="value">{{item.merchant_name}}</text>
+          </view>
+        </view>
+        <view class="card-footer">
+          <text class="time">{{item.created_at}}</text>
+          <text class="arrow">查看详情 →</text>
+        </view>
+      </view>
+    </block>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && records.length === 0}}">
+      <text class="empty-icon">📭</text>
+      <text class="empty-text">暂无兑换记录</text>
+      <text class="empty-hint">去参加活动领礼品吧～</text>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="load-more" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+    <view class="load-more" wx:if="{{!hasMore && records.length > 0}}">
+      <text class="no-more">— 没有更多了 —</text>
+    </view>
+  </view>
+</view>

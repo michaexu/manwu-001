@@ -1,0 +1,52 @@
+<!--
+  兑换码展示页（用户端）
+  设计参照 Ardot 2:176
+-->
+<view class="qr-page">
+  <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+
+  <!-- 自定义导航栏 -->
+  <view class="qr-nav">
+    <view class="qr-nav__back" bindtap="onBack">
+      <text>&larr;</text>
+    </view>
+    <text class="qr-nav__title">我的兑换码</text>
+  </view>
+
+  <view class="qr-content">
+    <!-- 兑换码信息卡片 -->
+    <view class="qr-card">
+      <!-- 图标 -->
+      <text class="qr-gift-icon">🎁</text>
+
+      <!-- 活动名称 -->
+      <text class="qr-act-name">{{activityTitle || '活动兑换'}}</text>
+
+      <!-- 二维码占位区 -->
+      <view class="qr-code-area">
+        <text class="qr-code-area__tip">到店出示此码</text>
+      </view>
+
+      <!-- 兑换码分段显示 -->
+      <view class="qr-code-value">
+        <text wx:for="{{codeSegments}}" wx:key="index" class="qr-segment">{{item}}</text>
+      </view>
+
+      <!-- 兑换方式标签 + 积分 -->
+      <view class="qr-bottom-row">
+        <view class="qr-type-tag {{redeemType === 'vip_free' ? 'qr-type-tag--vip' : ''}}">
+          {{redeemType === 'vip_free' ? 'VIP免积分' : '积分兑换'}}
+        </view>
+        <text wx:if="{{pointsSpent > 0}}" class="qr-points">消耗 {{pointsSpent}} 积分</text>
+      </view>
+    </view>
+
+    <!-- 使用提示 -->
+    <view class="qr-tips">
+      <text class="qr-tips__title">💡 使用提示</text>
+      <text class="qr-tips__item">1. 到店后出示此兑换码给商家</text>
+      <text class="qr-tips__item">2. 商家扫码确认后即可领取礼品</text>
+      <text class="qr-tips__item">3. 兑换码有效期为24小时</text>
+    </view>
+  </view>
+</view>

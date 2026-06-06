@@ -1,0 +1,117 @@
+<!--
+  商家后台首页
+  设计参照 Ardot 8:175
+-->
+<view class="merchant-page">
+  <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+
+  <scroll-view class="merchant-content" scroll-y enhanced show-scrollbar="{{false}}">
+    <!-- 头部 -->
+    <view class="m-header">
+      <view class="shop-info">
+        <view class="shop-logo">
+          <text class="shop-logo__emoji">🏪</text>
+        </view>
+        <text class="shop-name">{{shopName}}</text>
+      </view>
+      <view class="header-actions">
+        <view class="icon-btn" bindtap="onScanCode">
+          <text>📷</text>
+        </view>
+        <view class="icon-btn">
+          <text>⚙️</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 数据概览 -->
+    <view class="stats-row">
+      <view class="stat-card">
+        <text class="stat-num">{{stats.activities}}</text>
+        <text class="stat-label">进行中活动</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-num">{{stats.todayRedeems}}</text>
+        <text class="stat-label">今日核销</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-num">{{stats.totalRedeems}}</text>
+        <text class="stat-label">累计核销</text>
+      </view>
+    </view>
+
+    <!-- 活动管理 -->
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">活动管理</text>
+        <view class="section-actions">
+          <view class="action-link" bindtap="onViewAllActivities">查看全部</view>
+          <view class="action-btn" bindtap="onCreateActivity">+ 新建</view>
+        </view>
+      </view>
+
+      <!-- 活动卡片 -->
+      <view
+        class="m-act-card"
+        wx:for="{{recentActivities}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onEditActivity"
+      >
+        <view class="m-act-left">
+          <view class="m-act-icon" style="background: {{item.color || '#EC4899'}};">
+            <text>{{item.emoji || '🎁'}}</text>
+          </view>
+          <view class="m-act-info">
+            <text class="m-act-title">{{item.title}}</text>
+            <view class="m-act-meta">
+              <text class="m-act-meta-item">VIP剩{{item.vip_quota - item.vip_redeemed_count}}位</text>
+              <text class="m-act-meta-item">普剩{{item.regular_quota - item.regular_redeemed_count}}位</text>
+            </view>
+          </view>
+        </view>
+        <view
+          class="m-act-status {{item.status === 'active' ? 'm-act-status--on' : 'm-act-status--off'}}"
+          data-id="{{item.id}}"
+          data-status="{{item.status}}"
+          catchtap="onToggleStatus"
+        >
+          {{item.status === 'active' ? '进行中' : '已下架'}}
+        </view>
+      </view>
+
+      <view wx:if="{{recentActivities.length === 0}}" class="empty-row">
+        <text class="empty-row__text">暂无活动，点击右上角新建</text>
+      </view>
+    </view>
+
+    <!-- 最近核销 -->
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">最近核销</text>
+        <view class="action-link" bindtap="onViewAllRedeems">查看全部</view>
+      </view>
+
+      <view
+        class="redeem-item"
+        wx:for="{{recentRedeems}}"
+        wx:key="id"
+      >
+        <view class="redeem-item__avatar">
+          <text>👤</text>
+        </view>
+        <view class="redeem-item__info">
+          <text class="redeem-item__name">{{item.user_name || '用户'}}</text>
+          <text class="redeem-item__meta">{{item.activity_title}} · {{item.gift_name}}</text>
+        </view>
+        <text class="redeem-item__time">{{item.created_at}}</text>
+      </view>
+
+      <view wx:if="{{recentRedeems.length === 0}}" class="empty-row">
+        <text class="empty-row__text">暂无核销记录</text>
+      </view>
+    </view>
+
+    <view class="safe-bottom" style="height: 64rpx;"></view>
+  </scroll-view>
+</view>

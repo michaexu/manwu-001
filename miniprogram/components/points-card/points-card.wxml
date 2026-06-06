@@ -1,0 +1,31 @@
+<view class="points-card">
+  <!-- 积分余额 -->
+  <view class="points-main">
+    <text class="points-label">我的积分</text>
+    <text class="points-value">{{points}}</text>
+  </view>
+
+  <!-- VIP配额条 -->
+  <view class="vip-quota" wx:if="{{showVipQuota && vip}}">
+    <view class="quota-header">
+      <text class="quota-title">🎫 本月免积分参与</text>
+      <text class="quota-count">{{vip.monthlyRemaining || 0}}/{{vip.monthlyQuota || 0}} 次</text>
+    </view>
+    <view class="quota-bar">
+      <view class="quota-fill" style="width: {{vip.monthlyQuota > 0 ? (vip.monthlyUsed || 0) / vip.monthlyQuota * 100 : 0}}%"></view>
+    </view>
+  </view>
+
+  <!-- 快捷操作 -->
+  <view class="quick-actions">
+    <view class="action-item" bindtap="onTapCheckin">
+      <text class="action-icon">📅</text>
+      <text class="action-text">签到</text>
+    </view>
+    <view class="action-divider"></view>
+    <view class="action-item" bindtap="onTapAd">
+      <text class="action-icon">📺</text>
+      <text class="action-text">看广告赚积分</text>
+    </view>
+  </view>
+</view>

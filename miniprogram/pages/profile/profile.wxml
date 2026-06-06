@@ -1,0 +1,92 @@
+<!-- 个人中心 -->
+<view class="page">
+  <!-- 个人信息卡片 -->
+  <view class="profile-header">
+    <view class="profile-header__bg"></view>
+    <view class="profile-header__content">
+      <view class="avatar">
+        <text class="avatar__text">{{userInfo.nickName ? userInfo.nickName[0] : '?'}}</text>
+      </view>
+      <text class="profile-name">{{userInfo.nickName || '未登录'}}</text>
+      <text class="profile-phone">{{userInfo.phone || '点击绑定手机号'}}</text>
+      <button
+        wx:if="{{!userInfo.phone}}"
+        class="phone-btn"
+        open-type="getPhoneNumber"
+        bindgetphonenumber="handleGetPhoneNumber"
+      >绑定手机号</button>
+      <view wx:if="{{vipLevel > 0}}" class="vip-badge">
+        <text>👑 VIP{{vipLevel}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 积分概览 -->
+  <view class="points-bar">
+    <view class="points-bar__item">
+      <text class="points-bar__value">{{points}}</text>
+      <text class="points-bar__label">可用积分</text>
+    </view>
+    <view class="points-bar__divider"></view>
+    <view class="points-bar__item">
+      <text class="points-bar__value">{{vipLevel || 0}}</text>
+      <text class="points-bar__label">VIP等级</text>
+    </view>
+    <view class="points-bar__divider"></view>
+    <view class="points-bar__item">
+      <text class="points-bar__value">{{vip && vip.monthlyRemaining || 0}}</text>
+      <text class="points-bar__label">本月免积分</text>
+    </view>
+  </view>
+
+  <!-- VIP 专属信息 -->
+  <view wx:if="{{vip}}" class="vip-card">
+    <view class="vip-card__header">
+      <text class="vip-card__title">👑 VIP{{vip.level}} 专属权益</text>
+    </view>
+    <view class="vip-card__body">
+      <view class="vip-card__item">
+        <text class="vip-card__item-label">月度免积分配额</text>
+        <text class="vip-card__item-value">{{vip.monthlyQuota}} 次/月</text>
+      </view>
+      <view class="vip-card__item">
+        <text class="vip-card__item-label">本月已使用</text>
+        <text class="vip-card__item-value">{{vip.monthlyUsed}} 次</text>
+      </view>
+      <view class="vip-card__item">
+        <text class="vip-card__item-label">本月剩余</text>
+        <text class="vip-card__item-value vip-card__item-value--highlight">{{vip.monthlyRemaining}} 次</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 菜单列表 -->
+  <view class="menu-group">
+    <view
+      class="menu-item"
+      wx:for="{{menuList}}"
+      wx:key="title"
+      data-url="{{item.url}}"
+      data-title="{{item.title}}"
+      bindtap="handleMenuTap"
+    >
+      <text class="menu-item__icon">{{item.icon}}</text>
+      <text class="menu-item__text">{{item.title}}</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 商家管理入口 -->
+  <view wx:if="{{isMerchant}}" class="menu-group">
+    <view class="menu-item menu-item--merchant" bindtap="handleMerchantEntry">
+      <text class="menu-item__icon">🏪</text>
+      <text class="menu-item__text">商家管理中心</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-section">
+    <button class="logout-btn" bindtap="handleLogout">退出登录</button>
+  </view>
+</view>

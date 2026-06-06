@@ -1,0 +1,93 @@
+<!--
+  登录/注册页
+  设计参照 Ardot 8:2 | 配色 #FFF1F2 背景 / #DC2626 主色
+-->
+<view class="login-page">
+  <!-- 状态栏占位 -->
+  <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+
+  <!-- 主内容区：居中布局 -->
+  <view class="login-content">
+    <!-- Logo 区域 -->
+    <view class="logo-area">
+      <view class="logo-icon">
+        <text class="logo-emoji">🎁</text>
+      </view>
+      <text class="welcome-text">欢迎来到积分活动</text>
+      <text class="subtitle">签到、看广告赚积分，兑换好礼</text>
+    </view>
+
+    <!-- 手机号输入卡片 -->
+    <view class="phone-card">
+      <!-- 手机号行 -->
+      <view class="input-row">
+        <text class="input-prefix">+86</text>
+        <input
+          class="input-field"
+          type="number"
+          maxlength="11"
+          placeholder="请输入手机号"
+          value="{{phone}}"
+          bindinput="onPhoneInput"
+        />
+      </view>
+
+      <view class="input-divider"></view>
+
+      <!-- 验证码行 -->
+      <view class="input-row">
+        <input
+          class="input-field input-field--sms"
+          type="number"
+          maxlength="6"
+          placeholder="请输入验证码"
+          value="{{smsCode}}"
+          bindinput="onSmsInput"
+        />
+        <view
+          class="sms-btn {{smsCountdown > 0 ? 'sms-btn--counting' : ''}}"
+          bindtap="onSendSms"
+        >
+          <text wx:if="{{smsCountdown > 0}}">{{smsCountdown}}s</text>
+          <text wx:else>获取验证码</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 协议勾选 -->
+    <view class="agree-row" bindtap="onToggleAgree">
+      <view class="checkbox {{agreed ? 'checkbox--checked' : ''}}">
+        <text wx:if="{{agreed}}" class="checkbox-icon">✓</text>
+      </view>
+      <text class="agree-text">
+        已阅读并同意
+        <text class="agree-link" data-type="用户协议" catchtap="onViewAgreement">《用户协议》</text>
+        和
+        <text class="agree-link" data-type="隐私政策" catchtap="onViewAgreement">《隐私政策》</text>
+      </text>
+    </view>
+
+    <!-- 登录按钮 -->
+    <view class="login-btn {{loading ? 'login-btn--loading' : ''}}" bindtap="onPhoneLogin">
+      <text wx:if="{{!loading}}">登录 / 注册</text>
+      <text wx:else>登录中...</text>
+    </view>
+
+    <!-- 分割线：或 -->
+    <view class="divider-row">
+      <view class="divider-line"></view>
+      <text class="divider-or">或</text>
+      <view class="divider-line"></view>
+    </view>
+
+    <!-- 微信一键登录 -->
+    <button
+      class="wechat-btn"
+      open-type="getPhoneNumber"
+      bindgetphonenumber="onGetPhoneNumber"
+    >
+      <text class="wechat-icon">💬</text>
+      <text class="wechat-text">微信一键登录</text>
+    </button>
+  </view>
+</view>

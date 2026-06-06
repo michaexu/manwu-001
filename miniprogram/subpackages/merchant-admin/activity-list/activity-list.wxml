@@ -1,0 +1,59 @@
+<!--
+  商家活动列表
+-->
+<view class="al-page">
+  <view class="al-header">
+    <text class="al-title">活动管理</text>
+    <view class="al-create-btn" bindtap="onCreate">+ 新建活动</view>
+  </view>
+
+  <scroll-view
+    class="al-list"
+    scroll-y
+    enhanced
+    show-scrollbar="{{false}}"
+    bindscrolltolower="onLoadMore"
+  >
+    <view
+      class="al-card"
+      wx:for="{{activities}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="onEdit"
+    >
+      <!-- 左边：活动信息 -->
+      <view class="al-card__left">
+        <view class="al-card__icon" style="background: {{item.color || '#EC4899'}};">
+          <text>{{item.emoji || '🎁'}}</text>
+        </view>
+        <view class="al-card__info">
+          <text class="al-card__title">{{item.title}}</text>
+          <view class="al-card__meta">
+            <text class="meta-tag">{{item.points_required}}积分</text>
+            <text class="meta-tag">VIP剩{{item.vip_quota - item.vip_redeemed_count}}</text>
+            <text class="meta-tag">普剩{{item.regular_quota - item.regular_redeemed_count}}</text>
+          </view>
+        </view>
+      </view>
+      <!-- 右边：状态开关 -->
+      <view
+        class="al-status {{item.status === 'active' ? 'al-status--on' : 'al-status--off'}}"
+        data-id="{{item.id}}"
+        data-status="{{item.status}}"
+        catchtap="onToggleStatus"
+      >
+        {{item.status === 'active' ? '进行中' : '已下架'}}
+      </view>
+    </view>
+
+    <view wx:if="{{loading}}" class="al-loading">加载中...</view>
+    <view wx:elif="{{!hasMore && activities.length > 0}}" class="al-end">— 没有更多了 —</view>
+    <view wx:if="{{!loading && activities.length === 0}}" class="al-empty">
+      <text class="al-empty__icon">📋</text>
+      <text class="al-empty__text">还没有创建活动</text>
+      <view class="al-empty__btn" bindtap="onCreate">立即创建</view>
+    </view>
+
+    <view style="height: 64rpx;"></view>
+  </scroll-view>
+</view>

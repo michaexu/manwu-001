@@ -1,0 +1,85 @@
+<!--
+  每日签到页
+  设计参照 Ardot 8:33
+-->
+<view class="checkin-page">
+  <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+
+  <scroll-view class="checkin-content" scroll-y enhanced show-scrollbar="{{false}}">
+    <!-- 头部 -->
+    <view class="checkin-header">
+      <text class="ch-title">每日签到</text>
+      <text class="ch-rules" bindtap="onViewRules">规则 &gt;</text>
+    </view>
+
+    <!-- 今日奖励卡片 -->
+    <view class="today-reward">
+      <text class="reward-icon">🎁</text>
+      <view class="reward-info">
+        <text class="reward-title">今日签到奖励</text>
+        <text class="reward-value">+{{todayReward}} 积分</text>
+      </view>
+    </view>
+
+    <!-- 签到按钮 -->
+    <view
+      class="checkin-btn {{checkedIn ? 'checkin-btn--done' : ''}}"
+      bindtap="onCheckin"
+    >
+      <text wx:if="{{!checkedIn}}">立即签到</text>
+      <text wx:else>今日已签到 ✓</text>
+    </view>
+
+    <!-- 连续签到卡片 -->
+    <view class="streak-card">
+      <text class="streak-icon">🔥</text>
+      <view class="streak-info">
+        <text class="streak-title">连续签到</text>
+        <text class="streak-value">{{streakDays}} 天</text>
+      </view>
+      <text class="streak-tip">继续坚持，解锁更多奖励！</text>
+    </view>
+
+    <!-- 月历卡片 -->
+    <view class="calendar-card">
+      <!-- 月份导航 -->
+      <view class="month-nav">
+        <view class="month-nav__arrow" bindtap="onPrevMonth">&lt;</view>
+        <text class="month-nav__label">{{currentYear}}年{{currentMonth}}月</text>
+        <view class="month-nav__arrow" bindtap="onNextMonth">&gt;</view>
+      </view>
+
+      <!-- 星期表头 -->
+      <view class="weekday-header">
+        <text wx:for="{{weekdays}}" wx:key="*this" class="weekday-cell">{{item}}</text>
+      </view>
+
+      <!-- 日期网格 -->
+      <view class="week-row" wx:for="{{weeks}}" wx:key="index">
+        <view
+          wx:for="{{item}}"
+          wx:for-item="cell"
+          wx:key="index"
+          class="day-cell {{cell.checked ? 'day-cell--checked' : ''}} {{cell.isToday ? 'day-cell--today' : ''}} {{!cell.day ? 'day-cell--empty' : ''}}"
+        >
+          <text wx:if="{{cell.day}}">{{cell.day}}</text>
+        </view>
+      </view>
+
+      <!-- 图例 -->
+      <view class="legend">
+        <view class="legend-item">
+          <view class="legend-dot legend-dot--checked"></view>
+          <text>已签到</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-dot legend-dot--today"></view>
+          <text>今天</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 安全区 -->
+    <view class="safe-bottom" style="height: 32rpx;"></view>
+  </scroll-view>
+</view>

@@ -1,0 +1,49 @@
+<!--
+  商家核销记录
+-->
+<view class="sh-page">
+  <scroll-view
+    class="sh-list"
+    scroll-y
+    enhanced
+    show-scrollbar="{{false}}"
+    bindscrolltolower="onLoadMore"
+  >
+    <view
+      class="sh-card"
+      wx:for="{{records}}"
+      wx:key="id"
+      data-code="{{item.code}}"
+      bindtap="onTapRecord"
+    >
+      <view class="sh-card__left">
+        <view class="sh-card__avatar">
+          <text>👤</text>
+        </view>
+        <view class="sh-card__info">
+          <text class="sh-card__user">{{item.user_name || '用户'}}</text>
+          <text class="sh-card__activity">{{item.activity_title}}</text>
+          <view class="sh-card__tags">
+            <text class="sh-tag">{{item.gift_name}}</text>
+            <text class="sh-tag sh-tag--code">{{item.code}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="sh-card__right">
+        <text class="sh-card__time">{{item.confirmed_at || item.created_at}}</text>
+        <view class="sh-badge {{item.redeem_type === 'vip_free' ? 'sh-badge--vip' : ''}}">
+          {{item.redeem_type === 'vip_free' ? 'VIP免' : '积分'}}
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{loading}}" class="sh-loading">加载中...</view>
+    <view wx:elif="{{!hasMore && records.length > 0}}" class="sh-end">— 没有更多了 —</view>
+    <view wx:if="{{!loading && records.length === 0}}" class="sh-empty">
+      <text class="sh-empty__icon">📭</text>
+      <text class="sh-empty__text">暂无核销记录</text>
+    </view>
+
+    <view style="height: 64rpx;"></view>
+  </scroll-view>
+</view>

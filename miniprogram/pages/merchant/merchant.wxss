@@ -1,0 +1,256 @@
+/**
+ * 商家后台样式 - 设计参照 Ardot 8:175
+ */
+.merchant-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.merchant-content {
+  flex: 1;
+  padding: 0 32rpx;
+}
+
+/* ===== 头部 ===== */
+.m-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 0 32rpx;
+}
+
+.shop-info {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.shop-logo {
+  width: 88rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+}
+
+.shop-logo__emoji {
+  font-size: 44rpx;
+}
+
+.shop-name {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.header-actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+.icon-btn {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-full);
+  font-size: 40rpx;
+}
+
+/* ===== 数据概览 ===== */
+.stats-row {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 32rpx;
+}
+
+.stat-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  background: var(--color-bg-card);
+  border-radius: 20rpx;
+  padding: 24rpx 16rpx;
+}
+
+.stat-num {
+  font-size: var(--font-2xl);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.stat-label {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+/* ===== 区块 ===== */
+.section {
+  margin-bottom: 32rpx;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.section-actions {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.action-link {
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+}
+
+.action-btn {
+  font-size: var(--font-xs);
+  color: #FFFFFF;
+  background: var(--color-primary);
+  padding: 8rpx 24rpx;
+  border-radius: var(--radius-full);
+}
+
+/* ===== 活动卡片 ===== */
+.m-act-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-bg-card);
+  border-radius: 20rpx;
+  padding: 24rpx 28rpx;
+  margin-bottom: 16rpx;
+}
+
+.m-act-left {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  flex: 1;
+}
+
+.m-act-icon {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  font-size: 32rpx;
+  flex-shrink: 0;
+}
+
+.m-act-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.m-act-title {
+  font-size: var(--font-base);
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.m-act-meta {
+  display: flex;
+  gap: 16rpx;
+}
+
+.m-act-meta-item {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+.m-act-status {
+  font-size: var(--font-xs);
+  padding: 6rpx 20rpx;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.m-act-status--on {
+  background: #DCFCE7;
+  color: #16A34A;
+}
+
+.m-act-status--off {
+  background: var(--color-muted-bg);
+  color: var(--color-text-muted);
+}
+
+/* ===== 核销记录 ===== */
+.redeem-item {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  background: var(--color-bg-card);
+  border-radius: 20rpx;
+  padding: 24rpx 28rpx;
+  margin-bottom: 12rpx;
+}
+
+.redeem-item__avatar {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  border-radius: var(--radius-full);
+  font-size: 36rpx;
+  flex-shrink: 0;
+}
+
+.redeem-item__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.redeem-item__name {
+  font-size: var(--font-base);
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.redeem-item__meta {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+.redeem-item__time {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+/* ===== 空状态 ===== */
+.empty-row {
+  padding: 48rpx;
+  text-align: center;
+}
+
+.empty-row__text {
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+}

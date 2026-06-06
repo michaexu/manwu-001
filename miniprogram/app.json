@@ -1,0 +1,74 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/activity/activity",
+    "pages/profile/profile",
+    "pages/login/login",
+    "pages/scan/scan",
+    "pages/qrcode/qrcode",
+    "pages/checkin/checkin",
+    "pages/points/points",
+    "pages/merchant/merchant",
+    "pages/redeem-history/redeem-history",
+    "pages/ad-reward/ad-reward"
+  ],
+  "subpackages": [
+    {
+      "root": "subpackages/merchant-admin",
+      "pages": [
+        "activity-create/activity-create",
+        "activity-list/activity-list",
+        "scan-history/scan-history"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#DC2626",
+    "navigationBarTitleText": "积分活动",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#FFF1F2"
+  },
+  "tabBar": {
+    "color": "#64748B",
+    "selectedColor": "#DC2626",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/icons/home.png",
+        "selectedIconPath": "static/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/activity/activity",
+        "text": "活动",
+        "iconPath": "static/icons/gift.png",
+        "selectedIconPath": "static/icons/gift-active.png"
+      },
+      {
+        "pagePath": "pages/scan/scan",
+        "text": "扫码",
+        "iconPath": "static/icons/scan.png",
+        "selectedIconPath": "static/icons/scan-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "static/icons/user.png",
+        "selectedIconPath": "static/icons/user-active.png"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于展示附近的合作商家"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getLocation",
+    "chooseAddress"
+  ],
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}
