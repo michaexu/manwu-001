@@ -69,15 +69,20 @@
   color: var(--color-text-primary);
 }
 
-/* 二维码占位区 */
+/* 二维码区 */
 .qr-code-area {
   width: 360rpx;
   height: 360rpx;
-  background: #F0F2F2;
+  background: #FFFFFF;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+
+.qr-canvas {
+  display: block;
 }
 
 .qr-code-area__tip {

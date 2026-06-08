@@ -1,8 +1,7 @@
 /**
- * 商家端 - 活动创建/编辑
- * 支持：VIP/普通用户分名额、礼物规格、商家介绍
+ * 商家端 - 活动创建/编辑（含图片上传）
  */
-const { api } = require('../../../utils/request');
+const merchantService = require('../../../services/merchant');
 
 Page({
   data: {
@@ -10,29 +9,24 @@ Page({
     activityId: '',
     submitting: false,
 
-    // 表单数据
     form: {
       title: '',
       description: '',
       emoji: '🎁',
       color: '#DC2626',
       image_url: '',
-      // 礼品信息
       gift_name: '',
       gift_spec: '',
       gift_description: '',
-      // 参与条件
+      gift_image_url: '',
       points_required: 100,
       vip_quota: 0,
       regular_quota: 0,
-      // 商家介绍
-      merchant_description: '',
-      // 时间
       start_time: '',
       end_time: ''
     },
 
-    // 可选颜色
+    emojiOptions: ['🎁', '🎂', '🍰', '☕', '🍕', '🎬', '🎵', '💎', '🌟', '🎯'],
     colorOptions: [
       { value: '#DC2626', label: '红色' },
       { value: '#EC4899', label: '粉色' },
@@ -42,8 +36,7 @@ Page({
       { value: '#7C3AED', label: '紫色' }
     ],
 
-    // 可选图标
-    emojiOptions: ['🎁', '🎂', '🍰', '☕', '🍕', '🎬', '🎵', '💎', '🌟', '🎯']
+    uploading: { image: false, gift: false }
   },
 
   onLoad(options) {
@@ -53,120 +46,133 @@ Page({
     }
   },
 
-  /** 加载已有活动（编辑模式） */
   async loadActivity(id) {
     try {
-      const res = await api.get(`/merchant/activities/${id}`);
-      const activity = res.data;
+      const res = await merchantService.getActivity(id);
+      const a = res.data;
       this.setData({
         form: {
-          title: activity.title || '',
-          description: activity.description || '',
-          emoji: activity.emoji || '🎁',
-          color: activity.color || '#DC2626',
-          image_url: activity.image_url || '',
-          gift_name: activity.gift_name || '',
-          gift_spec: activity.gift_spec || '',
-          gift_description: activity.gift_description || '',
-          points_required: activity.points_required || 100,
-          vip_quota: activity.vip_quota || 0,
-          regular_quota: activity.regular_quota || 0,
-          merchant_description: activity.merchant_description || '',
-          start_time: activity.start_time || '',
-          end_time: activity.end_time || ''
+          title: a.title || '',
+          description: a.description || '',
+          emoji: a.emoji || '🎁',
+          color: a.color || '#DC2626',
+          image_url: a.image_url || '',
+          gift_name: a.gift_name || '',
+          gift_spec: a.gift_spec || '',
+          gift_description: a.gift_description || '',
+          gift_image_url: a.gift_image_url || '',
+          points_required: a.points_required || 100,
+          vip_quota: a.vip_quota || 0,
+          regular_quota: a.regular_quota || 0,
+          start_time: a.start_time ? a.start_time.substring(0, 10) : '',
+          end_time: a.end_time ? a.end_time.substring(0, 10) : ''
         }
       });
     } catch (err) {
-      wx.showToast({ title: '加载活动失败', icon: 'none' });
+      wx.showToast({ title: '加载失败', icon: 'none' });
     }
   },
 
-  /** 表单字段更新 */
+  /** 选择并上传图片 */
+  uploadImage(e) {
+    const field = e.currentTarget.dataset.field;
+    const that = this;
+    wx.showActionSheet({
+      itemList: ['拍照', '从相册选择'],
+      success(res) {
+        const sourceType = res.tapIndex === 0 ? ['camera'] : ['album'];
+        wx.chooseMedia({
+          count: 1,
+          mediaType: ['image'],
+          sourceType,
+          sizeType: ['compressed'],
+          success(res) {
+            const tempFilePath = res.tempFiles[0].tempFilePath;
+            // 读取为 base64
+            const fs = wx.getFileSystemManager();
+            const base64 = fs.readFileSync(tempFilePath, 'base64');
+            const ext = tempFilePath.split('.').pop() || 'jpg';
+            const fileName = `${Date.now()}.${ext}`;
+            const dataUri = `data:image/${ext};base64,${base64}`;
+
+            that.setData({ [`uploading.${field}`]: true });
+            wx.showLoading({ title: '上传中...' });
+
+            merchantService.uploadImage(fileName, dataUri).then(res => {
+              wx.hideLoading();
+              that.setData({
+                [`form.${field}`]: res.data.url,
+                [`uploading.${field}`]: false
+              });
+              wx.showToast({ title: '上传成功', icon: 'success' });
+            }).catch(err => {
+              wx.hideLoading();
+              that.setData({ [`uploading.${field}`]: false });
+              wx.showToast({ title: '上传失败', icon: 'none' });
+            });
+          }
+        });
+      }
+    });
+  },
+
   handleInput(e) {
     const { field } = e.currentTarget.dataset;
-    const { value } = e.detail;
-    this.setData({ [`form.${field}`]: value });
+    this.setData({ [`form.${field}`]: e.detail.value });
   },
 
-  /** 数字字段更新 */
   handleNumberInput(e) {
     const { field } = e.currentTarget.dataset;
-    const value = parseInt(e.detail.value) || 0;
-    this.setData({ [`form.${field}`]: value });
+    this.setData({ [`form.${field}`]: parseInt(e.detail.value) || 0 });
   },
 
-  /** 选择颜色 */
-  handleColorSelect(e) {
-    const { color } = e.currentTarget.dataset;
-    this.setData({ 'form.color': color });
-  },
-
-  /** 选择图标 */
   handleEmojiSelect(e) {
-    const { emoji } = e.currentTarget.dataset;
-    this.setData({ 'form.emoji': emoji });
+    this.setData({ 'form.emoji': e.currentTarget.dataset.emoji });
   },
 
-  /** 选择时间 */
+  handleColorSelect(e) {
+    this.setData({ 'form.color': e.currentTarget.dataset.color });
+  },
+
   handleDateChange(e) {
     const { field } = e.currentTarget.dataset;
     this.setData({ [`form.${field}`]: e.detail.value });
   },
 
-  /** 提交表单 */
   async handleSubmit() {
     const { form, isEdit, activityId, submitting } = this.data;
     if (submitting) return;
 
-    // 基础校验
-    if (!form.title.trim()) {
-      wx.showToast({ title: '请输入活动标题', icon: 'none' });
-      return;
-    }
-    if (!form.description.trim()) {
-      wx.showToast({ title: '请输入活动描述', icon: 'none' });
-      return;
-    }
-    if (!form.gift_name.trim()) {
-      wx.showToast({ title: '请输入礼品名称', icon: 'none' });
-      return;
-    }
-    if (!form.points_required || form.points_required < 1) {
-      wx.showToast({ title: '所需积分必须大于0', icon: 'none' });
-      return;
-    }
+    if (!form.title.trim()) { wx.showToast({ title: '请输入活动标题', icon: 'none' }); return; }
+    if (!form.gift_name.trim()) { wx.showToast({ title: '请输入礼品名称', icon: 'none' }); return; }
+    if (!form.points_required || form.points_required < 1) { wx.showToast({ title: '所需积分必须大于0', icon: 'none' }); return; }
 
     this.setData({ submitting: true });
 
     try {
-      const url = isEdit
-        ? `/merchant/activities/${activityId}`
-        : '/merchant/activities';
-      const method = isEdit ? 'put' : 'post';
-
-      await api[method](url, {
+      const payload = {
         title: form.title.trim(),
-        description: form.description.trim(),
+        description: form.description.trim() || form.title.trim(),
         emoji: form.emoji,
         color: form.color,
         image_url: form.image_url || undefined,
         gift_name: form.gift_name.trim(),
         gift_spec: form.gift_spec.trim() || undefined,
         gift_description: form.gift_description.trim() || undefined,
+        gift_image_url: form.gift_image_url || undefined,
         points_required: form.points_required,
         vip_quota: form.vip_quota || 0,
         regular_quota: form.regular_quota || 0,
-        merchant_description: form.merchant_description.trim() || undefined,
         start_time: form.start_time || undefined,
         end_time: form.end_time || undefined
-      });
+      };
 
-      wx.showToast({
-        title: isEdit ? '更新成功' : '创建成功',
-        icon: 'success'
-      });
+      const method = isEdit ? 'updateActivity' : 'createActivity';
+      const args = isEdit ? [activityId, payload] : [payload];
+      await merchantService[method](...args);
 
-      setTimeout(() => wx.navigateBack(), 1500);
+      wx.showToast({ title: isEdit ? '更新成功' : '创建成功', icon: 'success' });
+      setTimeout(() => wx.navigateBack(), 1200);
     } catch (err) {
       this.setData({ submitting: false });
     }

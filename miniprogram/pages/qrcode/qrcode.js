@@ -1,77 +1,75 @@
 /**
  * 兑换码展示页（用户端）
- * 设计参照 Ardot 2:176
  */
-const activityService = require('../../services/activity');
+const { drawQR } = require('../../utils/qrcode');
 
 Page({
   data: {
     statusBarHeight: 20,
-    redemptionId: '',
     code: '',
     codeSegments: [],
     activityTitle: '',
     giftName: '',
     pointsSpent: 0,
-    redeemType: '',
-    expiresAt: '',
-    loading: true
+    redeemType: ''
   },
 
   onLoad(query) {
-    const sysInfo = wx.getSystemInfoSync();
-    this.setData({
-      statusBarHeight: sysInfo.statusBarHeight || 20,
-      redemptionId: query.id || ''
-    });
+    const { statusBarHeight } = wx.getWindowInfo();
+    this.setData({ statusBarHeight });
 
-    if (query.id) {
-      this.loadRedemption(query.id);
-    } else if (query.code) {
-      // 直接展示兑换码
+    if (query.code) {
       const code = decodeURIComponent(query.code);
-      this.setData({ code, codeSegments: this._formatCode(code), loading: false });
+      const giftName = query.gift ? decodeURIComponent(query.gift) : '';
+      this.setData({
+        code,
+        codeSegments: this._formatCode(code),
+        giftName,
+        activityTitle: giftName,
+        redeemType: query.type || 'points',
+        pointsSpent: parseInt(query.spent) || 0
+      });
     }
   },
 
-  async loadRedemption(id) {
-    try {
-      const res = await activityService.getRedeemHistory(1, 1);
-      // 简化处理：从首次兑换结果或路由参数获取
-      const redemption = res.data?.records?.find(r => r.id === parseInt(id));
-
-      if (redemption) {
-        const code = redemption.code;
-        this.setData({
-          code,
-          codeSegments: this._formatCode(code),
-          activityTitle: redemption.activity_title || '',
-          giftName: redemption.gift_name || '',
-          pointsSpent: redemption.points_spent || 0,
-          redeemType: redemption.redeem_type || 'points',
-          expiresAt: redemption.expires_at || '',
-          loading: false
-        });
-      } else if (this.data.code) {
-        this.setData({ loading: false });
-      }
-    } catch (err) {
-      this.setData({ loading: false });
-    }
+  onReady() {
+    if (!this.data.code) return;
+    this._renderQR();
   },
 
-  /** 格式化兑换码为分段显示 */
   _formatCode(code) {
     if (!code) return [];
-    // 将兑换码按4位分组
-    const segments = [];
+    const segs = [];
     for (let i = 0; i < code.length; i += 4) {
-      segments.push(code.substring(i, i + 4));
+      segs.push(code.substring(i, i + 4));
     }
-    return segments;
+    return segs;
   },
 
-  /** 返回 */
+  _renderQR() {
+    const query = wx.createSelectorQuery();
+    query.select('#qrCanvas')
+      .fields({ node: true, size: true })
+      .exec((res) => {
+        if (!res || !res[0] || !res[0].node) {
+          console.error('Canvas 节点获取失败');
+          return;
+        }
+        const canvas = res[0].node;
+        const ctx = canvas.getContext('2d');
+
+        // 设置物理像素（高清屏适配）
+        const dpr = wx.getWindowInfo().pixelRatio;
+        const displayWidth = 280;
+        const displayHeight = 280;
+        canvas.width = displayWidth * dpr;
+        canvas.height = displayHeight * dpr;
+        ctx.scale(dpr, dpr);
+
+        drawQR(this.data.code, ctx, displayWidth);
+      });
+  },
+
   onBack() {
     wx.navigateBack();
   }

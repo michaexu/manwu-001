@@ -35,6 +35,7 @@ CREATE TABLE users (
   phone             VARCHAR(20) UNIQUE,
   nick_name         VARCHAR(100),
   avatar_url        TEXT,
+  password_hash     VARCHAR(255) NULL,
   role              VARCHAR(20) DEFAULT 'user',
   vip_level         INT DEFAULT 0,
   points            INT DEFAULT 0,

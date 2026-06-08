@@ -110,8 +110,10 @@ async function loadMembers() {
         <td style="color:#64748B;font-size:13px;">${formatDate(u.created_at)}</td>
         <td>
           <div class="table-actions">
+            <button class="btn btn-sm btn-outline" onclick="window._viewDetail('${u.id}')">详情</button>
             <button class="btn btn-sm btn-primary" onclick="window._assignVip('${u.id}')">VIP</button>
             <button class="btn btn-sm btn-outline" onclick="window._adjustPoints('${u.id}')">积分</button>
+            <button class="btn btn-sm btn-outline" onclick="window._resetPwd('${u.id}')">改密</button>
             ${u.vip_level > 0 ? `<button class="btn btn-sm btn-outline" style="color:#EF4444;" onclick="window._revokeVip('${u.id}')">回收</button>` : ''}
           </div>
         </td>
@@ -250,6 +252,111 @@ window._submitPoints = async (event, userId) => {
     closeModal();
     showToast('积分调整成功', 'success');
     loadMembers();
+  } catch (err) { showToast(err.message, 'error'); }
+  return false;
+};
+
+window._viewDetail = async (userId) => {
+  openModal('用户详情', `<div class="loading-state" style="text-align:center;padding:30px;"><div class="loading-spinner"></div>加载中...</div>`);
+  try {
+    const { data } = await api.get(`/admin/users/${userId}`);
+    const u = data;
+    const stat = u.stats || {};
+    openModal('用户详情', `
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+        <div style="width:44px;height:44px;border-radius:10px;background:${getAvatarColor(u.nick_name)};display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;">${(u.nick_name || '?')[0]}</div>
+        <div>
+          <div style="font-weight:700;font-size:16px;">${escapeHtml(u.nick_name || '未设置')}</div>
+          <div style="font-size:13px;color:#64748B;">ID: ${u.id}</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="form-group">
+          <label>手机号</label>
+          <div style="font-family:monospace;font-weight:600;">${u.phone || '-'}</div>
+        </div>
+        <div class="form-group">
+          <label>角色</label>
+          <div>${renderRoleBadge(u.role)}</div>
+        </div>
+        <div class="form-group">
+          <label>VIP等级</label>
+          <div>${u.vip_level > 0 ? `VIP ${u.vip_level}` : '非VIP'}</div>
+        </div>
+        <div class="form-group">
+          <label>VIP月度配额</label>
+          <div>${u.vip_level > 0 ? `${u.vip_monthly_used || 0} / ${u.vip_monthly_quota || 0}` : '-'}</div>
+        </div>
+        <div class="form-group">
+          <label>当前积分</label>
+          <div style="font-weight:600;color:#DC2626;">${formatNumber(u.points)}</div>
+        </div>
+        <div class="form-group">
+          <label>累计获得积分</label>
+          <div style="color:#64748B;">${formatNumber(u.total_points_earned)}</div>
+        </div>
+        <div class="form-group">
+          <label>累计签到</label>
+          <div>${stat.total_checkins || 0} 次</div>
+        </div>
+        <div class="form-group">
+          <label>累计看广告</label>
+          <div>${stat.total_ads || 0} 次</div>
+        </div>
+        <div class="form-group">
+          <label>累计兑换</label>
+          <div>${stat.total_redeems || 0} 次</div>
+        </div>
+        <div class="form-group">
+          <label>累计消耗积分</label>
+          <div>${formatNumber(stat.total_points_spent || 0)}</div>
+        </div>
+        <div class="form-group">
+          <label>注册时间</label>
+          <div style="font-size:13px;color:#64748B;">${formatDate(u.created_at)}</div>
+        </div>
+        <div class="form-group">
+          <label>最近更新</label>
+          <div style="font-size:13px;color:#64748B;">${formatDate(u.updated_at)}</div>
+        </div>
+        ${u.merchant_name ? `
+        <div class="form-group">
+          <label>关联商家</label>
+          <div><span class="badge badge-info">${escapeHtml(u.merchant_name)}</span></div>
+        </div>` : ''}
+      </div>
+      <div class="modal-actions" style="margin-top:20px;">
+        <button class="btn btn-secondary" onclick="closeModal()">关闭</button>
+      </div>
+    `);
+  } catch (err) {
+    openModal('用户详情', `<p>加载失败：${err.message}</p><div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">关闭</button></div>`);
+  }
+};
+
+window._resetPwd = (userId) => {
+  openModal('修改密码', `
+    <form id="resetPwdForm" onsubmit="return window._submitResetPwd(event, '${userId}')">
+      <div class="form-group">
+        <label>新密码（至少6位）</label>
+        <input type="text" id="newPassword" required minlength="6" maxlength="50" placeholder="输入新密码">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+        <button type="submit" class="btn btn-primary">确认修改</button>
+      </div>
+    </form>
+  `);
+};
+
+window._submitResetPwd = async (event, userId) => {
+  event.preventDefault();
+  try {
+    const newPassword = document.getElementById('newPassword').value.trim();
+    if (newPassword.length < 6) { showToast('密码至少6位', 'error'); return false; }
+    await api.put(`/admin/users/${userId}/reset-password`, { newPassword });
+    closeModal();
+    showToast('密码已重置', 'success');
   } catch (err) { showToast(err.message, 'error'); }
   return false;
 };

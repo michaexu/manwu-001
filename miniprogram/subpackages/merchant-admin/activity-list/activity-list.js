@@ -28,7 +28,7 @@ Page({
     const { page, pageSize } = this.data;
     try {
       const res = await merchantService.getActivities({ page, page_size: pageSize });
-      const activities = res.data?.activities || [];
+      const activities = (res.data && res.data.activities) || [];
 
       this.setData({
         activities: page === 1 ? activities : [...this.data.activities, ...activities],

@@ -55,7 +55,7 @@ Page({
         redemption,
         user,
         activity,
-        merchantName: merchant?.name || '',
+        merchantName: (merchant && merchant.name) || '',
         loading: false
       });
     } catch (err) {

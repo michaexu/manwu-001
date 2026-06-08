@@ -11,15 +11,13 @@ Component({
     }
   },
 
-  computed: {},
-
   methods: {
     onTap() {
       const { activity } = this.properties;
       if (activity && activity.id) {
-        wx.navigateTo({
-          url: `/pages/activity/activity?id=${activity.id}`
-        });
+        const app = getApp();
+        app.globalData.pendingActivityId = activity.id;
+        wx.switchTab({ url: '/pages/activity/activity' });
       }
     }
   }

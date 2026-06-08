@@ -99,8 +99,11 @@ function request(options) {
           if (res.statusCode >= 200 && res.statusCode < 300) {
             resolve(res.data);
           } else {
-            const msg = res.data?.message || '请求失败';
-            wx.showToast({ title: msg, icon: 'none', duration: 2000 });
+            const msg = (res.data && res.data.message) || '请求失败';
+            // 401 静默处理，不弹 toast（refresh 失败后已有 reLaunch 跳转登录页）
+            if (res.statusCode !== 401) {
+              wx.showToast({ title: msg, icon: 'none', duration: 2000 });
+            }
             reject({
               code: res.statusCode,
               message: msg,

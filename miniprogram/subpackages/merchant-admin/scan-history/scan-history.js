@@ -20,7 +20,10 @@ Page({
     const { page, pageSize } = this.data;
     try {
       const res = await scanService.getScanHistory(page, pageSize);
-      const records = res.data?.records || [];
+      const records = ((res.data && res.data.records) || []).map(r => Object.assign(r, {
+        created_at: (r.created_at || '').substring(0, 10),
+        confirmed_at: r.confirmed_at ? r.confirmed_at.substring(0, 10) : ''
+      }));
 
       this.setData({
         records: page === 1 ? records : [...this.data.records, ...records],
@@ -44,14 +47,5 @@ Page({
     wx.navigateTo({
       url: `/pages/scan/scan?code=${encodeURIComponent(code)}`
     });
-  },
-
-  _formatTime(dateStr) {
-    const d = new Date(dateStr);
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    const h = String(d.getHours()).padStart(2, '0');
-    const min = String(d.getMinutes()).padStart(2, '0');
-    return `${m}-${day} ${h}:${min}`;
   }
 });

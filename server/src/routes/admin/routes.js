@@ -78,6 +78,91 @@ router.post('/points/adjust', validate(adjustPointsSchema), async (req, res, nex
   }
 });
 
+// ==================== 商家管理 ====================
+
+/**
+ * GET /api/v1/admin/merchants
+ * 商家列表
+ */
+router.get('/merchants', async (req, res, next) => {
+  try {
+    const { page = 1, page_size = 20, keyword, status, simple } = req.query;
+    if (simple === '1') {
+      const list = await adminService.getMerchantList();
+      return res.json({ success: true, data: list });
+    }
+    const result = await adminService.getMerchants({
+      page: parseInt(page),
+      pageSize: parseInt(page_size),
+      keyword,
+      status
+    });
+    res.json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /api/v1/admin/merchants/:id
+ * 商家详情
+ */
+router.get('/merchants/:id', async (req, res, next) => {
+  try {
+    const result = await adminService.getMerchantDetail(req.params.id);
+    res.json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+});
+
+const createMerchantSchema = z.object({
+  name: z.string().min(1, '商家名称不能为空').max(200),
+  phone: z.string().min(1, '手机号不能为空'),
+  address: z.string().optional(),
+  description: z.string().optional(),
+  password: z.string().optional()
+});
+
+/**
+ * POST /api/v1/admin/merchants
+ * 创建商家
+ */
+router.post('/merchants', validate(createMerchantSchema), async (req, res, next) => {
+  try {
+    const result = await adminService.createMerchant(req.validated);
+    res.json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * PUT /api/v1/admin/merchants/:id
+ * 更新商家
+ */
+router.put('/merchants/:id', async (req, res, next) => {
+  try {
+    const result = await adminService.updateMerchant(req.params.id, req.body);
+    res.json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * DELETE /api/v1/admin/merchants/:id
+ * 删除商家
+ */
+router.delete('/merchants/:id', async (req, res, next) => {
+  try {
+    await adminService.deleteMerchant(req.params.id);
+    res.json({ success: true, message: '商家已删除' });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // ==================== 用户管理 ====================
 
 /**
@@ -109,6 +194,23 @@ router.get('/users/:id', async (req, res, next) => {
   try {
     const result = await adminService.getUserDetail(req.user.id, req.params.id);
     res.json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * PUT /api/v1/admin/users/:id/reset-password
+ * 管理员重置用户密码
+ */
+const resetPasswordSchema = z.object({
+  newPassword: z.string().min(6, '密码至少6位').max(50, '密码不能超过50位')
+});
+
+router.put('/users/:id/reset-password', validate(resetPasswordSchema), async (req, res, next) => {
+  try {
+    await adminService.resetUserPassword(req.user.id, req.params.id, req.body.newPassword);
+    res.json({ success: true, message: '密码已重置' });
   } catch (err) {
     next(err);
   }

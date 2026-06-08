@@ -1,117 +1,257 @@
-<!--
-  商家后台首页
-  设计参照 Ardot 8:175
--->
+<!-- 商家后台 — 仪表盘 / 活动列表 -->
 <view class="merchant-page">
   <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
 
-  <scroll-view class="merchant-content" scroll-y enhanced show-scrollbar="{{false}}">
-    <!-- 头部 -->
-    <view class="m-header">
-      <view class="shop-info">
-        <view class="shop-logo">
-          <text class="shop-logo__emoji">🏪</text>
-        </view>
-        <text class="shop-name">{{shopName}}</text>
-      </view>
-      <view class="header-actions">
-        <view class="icon-btn" bindtap="onScanCode">
-          <text>📷</text>
-        </view>
-        <view class="icon-btn">
-          <text>⚙️</text>
-        </view>
-      </view>
+  <!-- 头部 -->
+  <view class="m-header">
+    <view class="shop-info">
+      <view class="shop-logo"><text class="shop-logo__emoji">🏪</text></view>
+      <text class="shop-name">{{shopName}}</text>
+    </view>
+    <view class="header-actions">
+      <view class="icon-btn" bindtap="onScanCode"><text>📷</text></view>
+      <view class="icon-btn" bindtap="onCreate"><text>＋</text></view>
+    </view>
+  </view>
+
+  <!-- 视图切换 -->
+  <view class="view-tabs">
+    <view class="view-tab {{viewMode === 'dashboard' ? 'view-tab--active' : ''}}" bindtap="switchToDashboard">
+      <text>📊 数据</text>
+    </view>
+    <view class="view-tab {{viewMode === 'list' ? 'view-tab--active' : ''}}" bindtap="switchToList">
+      <text>📋 活动</text>
+    </view>
+    <view class="view-tab {{viewMode === 'account' ? 'view-tab--active' : ''}}" bindtap="switchToAccount">
+      <text>👤 我的</text>
+    </view>
+  </view>
+
+  <!-- ========== 仪表盘 ========== -->
+  <scroll-view wx:if="{{viewMode === 'dashboard'}}" scroll-y class="dashboard-body" enhanced show-scrollbar="{{false}}">
+    <view wx:if="{{loading}}" class="loading-state">
+      <text>加载中...</text>
     </view>
 
-    <!-- 数据概览 -->
-    <view class="stats-row">
-      <view class="stat-card">
-        <text class="stat-num">{{stats.activities}}</text>
-        <text class="stat-label">进行中活动</text>
-      </view>
-      <view class="stat-card">
-        <text class="stat-num">{{stats.todayRedeems}}</text>
-        <text class="stat-label">今日核销</text>
-      </view>
-      <view class="stat-card">
-        <text class="stat-num">{{stats.totalRedeems}}</text>
-        <text class="stat-label">累计核销</text>
-      </view>
-    </view>
-
-    <!-- 活动管理 -->
-    <view class="section">
-      <view class="section-header">
-        <text class="section-title">活动管理</text>
-        <view class="section-actions">
-          <view class="action-link" bindtap="onViewAllActivities">查看全部</view>
-          <view class="action-btn" bindtap="onCreateActivity">+ 新建</view>
+    <block wx:else>
+      <!-- 快捷操作 -->
+      <view class="quick-actions">
+        <view class="quick-action quick-action--create" bindtap="onCreate">
+          <text class="quick-action-icon">＋</text>
+          <text class="quick-action-label">发布活动</text>
+        </view>
+        <view class="quick-action quick-action--scan" bindtap="onScanCode">
+          <text class="quick-action-icon">📷</text>
+          <text class="quick-action-label">扫码核销</text>
         </view>
       </view>
 
-      <!-- 活动卡片 -->
-      <view
-        class="m-act-card"
-        wx:for="{{recentActivities}}"
-        wx:key="id"
-        data-id="{{item.id}}"
-        bindtap="onEditActivity"
-      >
-        <view class="m-act-left">
-          <view class="m-act-icon" style="background: {{item.color || '#EC4899'}};">
-            <text>{{item.emoji || '🎁'}}</text>
+      <!-- 概览卡片 -->
+      <view class="stat-grid">
+        <view class="stat-card">
+          <text class="stat-num">{{overview.totalActivities}}</text>
+          <text class="stat-label">活动总数</text>
+          <view class="stat-sub">
+            <text class="stat-sub-item stat-sub--active">{{overview.activeActivities}} 进行中</text>
+            <text class="stat-sub-item stat-sub--pause">{{overview.pausedActivities}} 暂停</text>
+            <text class="stat-sub-item stat-sub--end">{{overview.endedActivities}} 结束</text>
           </view>
-          <view class="m-act-info">
-            <text class="m-act-title">{{item.title}}</text>
-            <view class="m-act-meta">
-              <text class="m-act-meta-item">VIP剩{{item.vip_quota - item.vip_redeemed_count}}位</text>
-              <text class="m-act-meta-item">普剩{{item.regular_quota - item.regular_redeemed_count}}位</text>
+        </view>
+
+        <view class="stat-card">
+          <text class="stat-num">{{overview.totalRedemptions}}</text>
+          <text class="stat-label">累计参与</text>
+          <view class="stat-sub">
+            <text class="stat-sub-item stat-sub--ok">{{overview.confirmedRedemptions}} 已核销</text>
+            <text class="stat-sub-item stat-sub--warn">{{overview.pendingRedemptions}} 待核销</text>
+          </view>
+        </view>
+
+        <view class="stat-card stat-card--row">
+          <view class="stat-half">
+            <text class="stat-num-sm">{{overview.vipRedemptions}}</text>
+            <text class="stat-label-sm">VIP 参与</text>
+          </view>
+          <view class="stat-divider"></view>
+          <view class="stat-half">
+            <text class="stat-num-sm">{{overview.pointsRedemptions}}</text>
+            <text class="stat-label-sm">积分兑换</text>
+          </view>
+        </view>
+
+        <view class="stat-card">
+          <text class="stat-num">{{overview.totalPointsSpent}}</text>
+          <text class="stat-label">累计积分消耗</text>
+        </view>
+      </view>
+
+      <!-- 月度趋势 -->
+      <view class="section" wx:if="{{monthlyTrend.length > 0}}">
+        <text class="section-title">📈 月度参与趋势</text>
+        <view class="bar-chart">
+          <view class="bar-item" wx:for="{{monthlyTrend}}" wx:key="month">
+            <view class="bar-stack">
+              <view class="bar-fill" style="height: {{item.count / maxMonthCount * 100}}%;">
+                <text wx:if="{{item.count > 0}}" class="bar-val">{{item.count}}</text>
+              </view>
+            </view>
+            <text class="bar-label">{{item.month}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 热门活动 TOP 5 -->
+      <view class="section" wx:if="{{topActivities.length > 0}}">
+        <text class="section-title">🔥 热门活动 TOP{{topActivities.length}}</text>
+        <view class="rank-list">
+          <view class="rank-item" wx:for="{{topActivities}}" wx:key="id">
+            <view class="rank-badge rank-badge--{{index < 3 ? 'hot' : 'normal'}}">{{index + 1}}</view>
+            <view class="rank-info">
+              <text class="rank-title">{{item.title}}</text>
+              <text class="rank-meta">
+                <text class="act-tag {{item.status === 'active' ? 'act-tag--on' : 'act-tag--off'}}">
+                  {{item.status === 'active' ? '进行中' : (item.status === 'paused' ? '暂停' : '结束')}}
+                </text>
+              </text>
+            </view>
+            <view class="rank-stats">
+              <text class="rank-num">{{item.participant_count}}</text>
+              <text class="rank-sublabel">参与</text>
+            </view>
+            <view class="rank-stats">
+              <text class="rank-num">{{item.confirmed_count}}</text>
+              <text class="rank-sublabel">核销</text>
             </view>
           </view>
         </view>
-        <view
-          class="m-act-status {{item.status === 'active' ? 'm-act-status--on' : 'm-act-status--off'}}"
-          data-id="{{item.id}}"
-          data-status="{{item.status}}"
-          catchtap="onToggleStatus"
-        >
-          {{item.status === 'active' ? '进行中' : '已下架'}}
-        </view>
       </view>
+    </block>
 
-      <view wx:if="{{recentActivities.length === 0}}" class="empty-row">
-        <text class="empty-row__text">暂无活动，点击右上角新建</text>
+    <view class="safe-bottom" style="height: 40rpx;"></view>
+  </scroll-view>
+
+  <!-- ========== 活动列表 ========== -->
+  <scroll-view wx:if="{{viewMode === 'list'}}" scroll-y class="m-list" bindscrolltolower="onReachBottom" enhanced show-scrollbar="{{false}}">
+    <!-- 快捷操作 -->
+    <view class="quick-actions quick-actions--list">
+      <view class="quick-action quick-action--create" bindtap="onCreate">
+        <text class="quick-action-icon">＋</text>
+        <text class="quick-action-label">发布活动</text>
       </view>
-    </view>
-
-    <!-- 最近核销 -->
-    <view class="section">
-      <view class="section-header">
-        <text class="section-title">最近核销</text>
-        <view class="action-link" bindtap="onViewAllRedeems">查看全部</view>
-      </view>
-
-      <view
-        class="redeem-item"
-        wx:for="{{recentRedeems}}"
-        wx:key="id"
-      >
-        <view class="redeem-item__avatar">
-          <text>👤</text>
-        </view>
-        <view class="redeem-item__info">
-          <text class="redeem-item__name">{{item.user_name || '用户'}}</text>
-          <text class="redeem-item__meta">{{item.activity_title}} · {{item.gift_name}}</text>
-        </view>
-        <text class="redeem-item__time">{{item.created_at}}</text>
-      </view>
-
-      <view wx:if="{{recentRedeems.length === 0}}" class="empty-row">
-        <text class="empty-row__text">暂无核销记录</text>
+      <view class="quick-action quick-action--scan" bindtap="onScanCode">
+        <text class="quick-action-icon">📷</text>
+        <text class="quick-action-label">扫码核销</text>
       </view>
     </view>
 
-    <view class="safe-bottom" style="height: 64rpx;"></view>
+    <view wx:if="{{listLoading && activities.length === 0}}" class="loading-box">
+      <text>加载中...</text>
+    </view>
+
+    <block wx:elif="{{activities.length > 0}}">
+      <view class="act-card" wx:for="{{activities}}" wx:key="id">
+        <view class="act-main" data-id="{{item.id}}" bindtap="toggleExpand">
+          <image
+            wx:if="{{item.image_url}}"
+            class="act-img"
+            src="{{item.image_url}}"
+            mode="aspectFill"
+          />
+          <view wx:else class="act-img act-img--placeholder">
+            <text>{{item.emoji || '🎁'}}</text>
+          </view>
+          <view class="act-info">
+            <text class="act-title">{{item.title}}</text>
+            <view class="act-meta">
+              <text class="act-meta-item">👥 {{item.participant_count || 0}} 人参与</text>
+              <text class="act-meta-item">⭐ {{item.points_required}} 积分</text>
+              <text class="act-tag {{item.status === 'active' ? 'act-tag--on' : 'act-tag--off'}}">
+                {{item.status === 'active' ? '进行中' : (item.status === 'paused' ? '已暂停' : '已结束')}}
+              </text>
+            </view>
+          </view>
+          <text class="act-arrow">{{expandedId === item.id ? '▾' : '▸'}}</text>
+        </view>
+
+        <view class="act-actions">
+          <view class="act-action" data-id="{{item.id}}" bindtap="onEdit">编辑</view>
+          <view class="act-action" data-id="{{item.id}}" data-status="{{item.status}}" bindtap="onToggleStatus">
+            {{item.status === 'active' ? '暂停' : '上架'}}
+          </view>
+          <view class="act-action act-action--danger" data-id="{{item.id}}" data-title="{{item.title}}" bindtap="onDelete">删除</view>
+        </view>
+
+        <view wx:if="{{expandedId === item.id}}" class="participants-panel">
+          <view wx:if="{{participantsLoading}}" class="loading-sm">加载中...</view>
+          <block wx:elif="{{expandedParticipants.length > 0}}">
+            <view class="participant-item" wx:for="{{expandedParticipants}}" wx:key="id" wx:for-item="p">
+              <view class="p-avatar">{{p.avatar}}</view>
+              <view class="p-info">
+                <text class="p-name">{{p.nick_name || '匿名用户'}}</text>
+                <text class="p-phone">{{p.phone || ''}}</text>
+              </view>
+              <view class="p-meta">
+                <text class="p-type">{{p.redeem_type === 'vip_free' ? 'VIP免费' : '积分'}}</text>
+                <text class="p-time">{{p.created_at}}</text>
+              </view>
+              <text class="p-status {{p.status === 'confirmed' ? 'p-status--ok' : ''}}">
+                {{p.status === 'confirmed' ? '已核销' : '待核销'}}
+              </text>
+            </view>
+          </block>
+          <view wx:else class="empty-sm">暂无参与者</view>
+        </view>
+      </view>
+
+      <view wx:if="{{hasMore}}" class="load-more">加载更多...</view>
+      <view wx:else class="load-more">— 已加载全部 —</view>
+    </block>
+
+    <view wx:else class="empty-state">
+      <text class="empty-icon">📋</text>
+      <text class="empty-text">还没有活动，点击右上角 ＋ 创建</text>
+    </view>
+
+    <view class="safe-bottom" style="height: 40rpx;"></view>
+  </scroll-view>
+
+  <!-- ========== 我的 ========== -->
+  <scroll-view wx:if="{{viewMode === 'account'}}" scroll-y class="dashboard-body" enhanced show-scrollbar="{{false}}">
+    <view class="acct-card">
+      <view class="acct-avatar">🏪</view>
+      <text class="acct-name">{{shopName}}</text>
+      <text class="acct-role">商家账户</text>
+    </view>
+
+    <view class="acct-section">
+      <view class="acct-row">
+        <text class="acct-row-label">店铺名称</text>
+        <text class="acct-row-value">{{shopName}}</text>
+      </view>
+      <view class="acct-row">
+        <text class="acct-row-label">账户角色</text>
+        <view class="acct-badge">商家</view>
+      </view>
+    </view>
+
+    <view class="acct-section">
+      <view class="acct-row acct-row--link" bindtap="switchToDashboard">
+        <text class="acct-row-label">📊 数据概览</text>
+        <text class="acct-row-arrow">›</text>
+      </view>
+      <view class="acct-row acct-row--link" bindtap="switchToList">
+        <text class="acct-row-label">📋 活动管理</text>
+        <text class="acct-row-arrow">›</text>
+      </view>
+    </view>
+
+    <view class="acct-section">
+      <view class="acct-row acct-row--link acct-row--danger" bindtap="handleLogout">
+        <text class="acct-row-label">退出登录</text>
+        <text class="acct-row-arrow">›</text>
+      </view>
+    </view>
+
+    <view class="safe-bottom" style="height: 40rpx;"></view>
   </scroll-view>
 </view>

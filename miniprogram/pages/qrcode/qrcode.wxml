@@ -8,7 +8,7 @@
   <!-- 自定义导航栏 -->
   <view class="qr-nav">
     <view class="qr-nav__back" bindtap="onBack">
-      <text>&larr;</text>
+      <text>←</text>
     </view>
     <text class="qr-nav__title">我的兑换码</text>
   </view>
@@ -22,9 +22,14 @@
       <!-- 活动名称 -->
       <text class="qr-act-name">{{activityTitle || '活动兑换'}}</text>
 
-      <!-- 二维码占位区 -->
+      <!-- 二维码 -->
       <view class="qr-code-area">
-        <text class="qr-code-area__tip">到店出示此码</text>
+        <canvas
+          type="2d"
+          id="qrCanvas"
+          class="qr-canvas"
+          style="width:280px;height:280px"
+        ></canvas>
       </view>
 
       <!-- 兑换码分段显示 -->

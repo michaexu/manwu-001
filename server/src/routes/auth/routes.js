@@ -43,6 +43,16 @@ const adminLoginSchema = z.object({
   password: z.string().optional()
 });
 
+// 手机号密码登录Schema
+const passwordLoginSchema = z.object({
+  phone: z.string().regex(/^1[3-9]\d{9}$/, '手机号格式不正确'),
+  password: z.string().min(1, '密码不能为空')
+});
+
+/**
+ * POST /api/v1/auth/password-login
+ * 手机号 + 密码登录（新用户自动注册）
+ */
 /**
  * POST /api/v1/auth/phone-login
  * 手机号注册/登录（微信code + 手机号code）
@@ -51,6 +61,20 @@ router.post('/phone-login', validate(phoneLoginSchema), async (req, res, next) =
   try {
     const { code, phone_code } = req.validated;
     const result = await authService.phoneLogin(code, phone_code);
+    res.json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * POST /api/v1/auth/password-login
+ * 手机号 + 密码登录（新用户自动注册）
+ */
+router.post('/password-login', validate(passwordLoginSchema), async (req, res, next) => {
+  try {
+    const { phone, password } = req.validated;
+    const result = await authService.passwordLogin(phone, password);
     res.json({ success: true, data: result });
   } catch (err) {
     next(err);

@@ -104,9 +104,17 @@
 /* ===== 协议勾选 ===== */
 .agree-row {
   display: flex;
-  align-items: center;
-  gap: 16rpx;
+  align-items: flex-start;
+  gap: 12rpx;
   width: 100%;
+}
+
+.agree-text-wrap {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  line-height: 1.6;
 }
 
 .checkbox {

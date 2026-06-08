@@ -359,6 +359,49 @@ const authService = {
   },
 
   /**
+   * 手机号 + 密码登录（通用，替换验证码登录）
+   */
+  async passwordLogin(phone, password) {
+    const bcrypt = require('bcryptjs');
+    const user = await this.findUserByPhone(phone);
+
+    if (!user) {
+      // 用户不存在则自动注册
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const insertResult = await db.query(
+        `INSERT INTO users (phone, nick_name, role, password_hash) VALUES ($1, $2, 'user', $3)`,
+        [phone, `用户${phone.slice(-4)}`, hashedPassword]
+      );
+      const newUser = await this.findUserByPhone(phone);
+      const tokens = await this.generateTokens(newUser);
+      return {
+        access_token: tokens.accessToken,
+        refresh_token: tokens.refreshToken,
+        user: this.sanitizeUser(newUser),
+        isNewUser: true
+      };
+    }
+
+    // 已有的微信用户未设置密码
+    if (!user.password_hash) {
+      throw new UnauthorizedError('该账号未设置密码，请联系管理员');
+    }
+
+    // 验证密码
+    const valid = await bcrypt.compare(password, user.password_hash);
+    if (!valid) {
+      throw new UnauthorizedError('密码错误');
+    }
+
+    const tokens = await this.generateTokens(user);
+    return {
+      access_token: tokens.accessToken,
+      refresh_token: tokens.refreshToken,
+      user: this.sanitizeUser(user)
+    };
+  },
+
+  /**
    * 管理员登录（手机号 + 密码，开发环境不验证密码）
    */
   async adminLogin(phone, password) {

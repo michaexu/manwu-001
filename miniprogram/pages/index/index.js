@@ -19,11 +19,20 @@ Page({
   },
 
   onLoad() {
+    // 商家角色跳转商家后台
+    if (getApp().globalData.isMerchant) {
+      wx.reLaunch({ url: '/pages/merchant/merchant' });
+      return;
+    }
     this.loadHomeData();
   },
 
   onShow() {
-    // 从其他页面返回时刷新积分
+    // 从其他页面返回时刷新积分（商家已在上方 onLoad 跳转，不会执行到这里）
+    if (getApp().globalData.isMerchant) {
+      wx.reLaunch({ url: '/pages/merchant/merchant' });
+      return;
+    }
     this.setData({ points: app.globalData.points });
   },
 
@@ -44,9 +53,10 @@ Page({
 
   async loadHomeData() {
     try {
+      const token = wx.getStorageSync('access_token');
       const [homeRes, checkinRes] = await Promise.all([
         api.get('/home', { page: 1, page_size: 10 }),
-        api.get('/checkin/today-status')
+        token ? api.get('/checkin/today-status') : Promise.resolve({ data: { checkedIn: false, reward: 10 } })
       ]);
 
       const { points, vipLevel, vip, userName, activities } = homeRes.data;
@@ -152,7 +162,8 @@ Page({
   /** 跳转活动详情 */
   handleActivityTap(e) {
     const { id } = e.currentTarget.dataset;
-    wx.navigateTo({ url: `/pages/activity/activity?id=${id}` });
+    app.globalData.pendingActivityId = id;
+    wx.switchTab({ url: '/pages/activity/activity' });
   },
 
   /** 更新积分（供App调用） */

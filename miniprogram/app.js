@@ -42,6 +42,16 @@ App({
         this.globalData.vip = userInfo.vip || null;
         this.globalData.isMerchant = userInfo.role === 'merchant';
         this.globalData.merchantInfo = userInfo.merchant || null;
+
+        // 商家角色直接跳转商家后台
+        if (this.globalData.isMerchant) {
+          const pages = getCurrentPages();
+          const currentPage = pages[pages.length - 1];
+          // 只在首次进入首页时跳转，避免循环
+          if (!currentPage || currentPage.route === 'pages/index/index') {
+            wx.reLaunch({ url: '/pages/merchant/merchant' });
+          }
+        }
       } catch (err) {
         // Token失效，需要重新登录
         wx.removeStorageSync('access_token');

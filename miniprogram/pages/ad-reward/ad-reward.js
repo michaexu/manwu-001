@@ -185,7 +185,7 @@ Page({
 
       this.setData({
         todayAdCount: todayRecords.length,
-        history: (res.data.records || []).slice(0, 10)
+        history: (res.data.records || []).slice(0, 10).map(r => Object.assign(r, { created_at: (r.created_at || '').substring(0, 10) }))
       });
     } catch (err) {
       console.error('加载广告历史失败:', err);

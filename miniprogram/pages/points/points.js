@@ -88,31 +88,23 @@ Page({
     let currentGroup = null;
 
     records.forEach(record => {
-      const date = this._formatGroupDate(record.created_at);
+      const rec = Object.assign({}, record, { created_at: (record.created_at || '').substring(0, 10) });
+      const date = this._formatGroupDate(rec.created_at);
       if (date !== currentDate) {
         currentDate = date;
         currentGroup = { date, items: [] };
         groups.push(currentGroup);
       }
-      currentGroup.items.push(record);
+      currentGroup.items.push(rec);
     });
 
     return groups;
   },
 
   _formatGroupDate(dateStr) {
-    const d = new Date(dateStr);
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const target = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    const diff = Math.floor((today - target) / (1000 * 60 * 60 * 24));
-
-    if (diff === 0) return '今天';
-    if (diff === 1) return '昨天';
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${y}-${m}-${day}`;
+    if (!dateStr) return '';
+    return dateStr.substring(0, 10);
+  },
   },
 
   /** 获取类型图标 */

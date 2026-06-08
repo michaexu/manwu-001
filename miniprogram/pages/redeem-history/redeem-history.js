@@ -63,7 +63,7 @@ Page({
       }
 
       const res = await api.get('/activities/redeem-history', params);
-      const newRecords = res.data.records || [];
+      const newRecords = (res.data.records || []).map(r => Object.assign(r, { created_at: (r.created_at || '').substring(0, 10) }));
 
       this.setData({
         records: page === 1 ? newRecords : [...this.data.records, ...newRecords],

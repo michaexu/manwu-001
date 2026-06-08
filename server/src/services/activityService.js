@@ -46,9 +46,9 @@ const activityService = {
   },
 
   /**
-   * 活动详情
+   * 活动详情（可选携带当前用户的兑换信息）
    */
-  async getDetail(activityId) {
+  async getDetail(activityId, userId) {
     const result = await db.query(
       `SELECT a.*, m.name as merchant_name, m.address as merchant_address,
               m.phone as merchant_phone, m.description as merchant_description,
@@ -63,7 +63,23 @@ const activityService = {
       throw new NotFoundError('活动不存在');
     }
 
-    return result.rows[0];
+    const activity = result.rows[0];
+
+    // 如果用户已登录，查询其兑换信息
+    if (userId) {
+      const redeemResult = await db.query(
+        `SELECT code, points_spent, redeem_type, status, created_at
+         FROM redemption_records
+         WHERE user_id = $1 AND activity_id = $2
+         ORDER BY created_at DESC LIMIT 1`,
+        [userId, activityId]
+      );
+      activity.user_redemption = redeemResult.rows[0] || null;
+    } else {
+      activity.user_redemption = null;
+    }
+
+    return activity;
   },
 
   /**

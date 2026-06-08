@@ -170,6 +170,12 @@
   color: var(--color-text-muted);
 }
 
+.bottom-bar__hint {
+  font-size: 20rpx;
+  color: #EF4444;
+  margin-top: 4rpx;
+}
+
 /* 兑换按钮 */
 .redeem-btn {
   height: 88rpx;
@@ -254,5 +260,130 @@
 
 .empty-state__text {
   font-size: var(--font-base);
+  color: var(--color-text-muted);
+}
+
+/* ===== 列表模式 ===== */
+.detail-back {
+  padding: 20rpx 32rpx;
+  font-size: var(--font-sm);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.section {
+  padding: 24rpx 32rpx;
+}
+
+.section__title {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.activity-card {
+  display: flex;
+  gap: 24rpx;
+  padding: 28rpx;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  margin-bottom: 20rpx;
+  box-shadow: var(--shadow-sm);
+}
+
+.activity-card:active {
+  opacity: 0.85;
+}
+
+.activity-card__img {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.activity-card__emoji {
+  font-size: 56rpx;
+}
+
+.activity-card__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.activity-card__title {
+  font-size: var(--font-md);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.activity-card__desc {
+  font-size: var(--font-xs);
+  color: var(--color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.activity-card__footer {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.tag {
+  padding: 4rpx 14rpx;
+  border-radius: 8rpx;
+  font-size: 20rpx;
+  font-weight: 600;
+}
+
+.tag-red {
+  background: #FEE2E2;
+  color: #DC2626;
+}
+
+.activity-card__merchant {
+  font-size: 20rpx;
+  color: var(--color-text-muted);
+}
+
+.activity-card__quota {
+  display: flex;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+
+.quota-tag {
+  font-size: 20rpx;
+  padding: 2rpx 10rpx;
+  border-radius: 6rpx;
+}
+
+.quota-tag--vip {
+  background: #FEF3C7;
+  color: #D97706;
+}
+
+.quota-tag--regular {
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+}
+
+.loading-more {
+  text-align: center;
+  padding: 32rpx;
+  font-size: var(--font-xs);
   color: var(--color-text-muted);
 }

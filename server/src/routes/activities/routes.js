@@ -4,7 +4,7 @@
 const express = require('express');
 const router = express.Router();
 const { z } = require('zod');
-const { authenticate } = require('../../middleware/auth');
+const { authenticate, optionalAuth } = require('../../middleware/auth');
 const { validate } = require('../../middleware/validate');
 const activityService = require('../../services/activityService');
 const subscriptionService = require('../../services/subscriptionService');
@@ -48,11 +48,11 @@ router.get('/', async (req, res, next) => {
 
 /**
  * GET /api/v1/activities/:id
- * 活动详情
+ * 活动详情（已登录用户自动附带自己的兑换信息）
  */
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', optionalAuth, async (req, res, next) => {
   try {
-    const activity = await activityService.getDetail(req.params.id);
+    const activity = await activityService.getDetail(req.params.id, req.user?.id);
     res.json({ success: true, data: activity });
   } catch (err) {
     next(err);

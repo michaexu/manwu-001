@@ -44,7 +44,8 @@ Page({
       ]);
 
       const { checkedIn, streakDays, reward } = statusRes.data;
-      const checkedDates = (historyRes.data?.records || []).map(r => r.date);
+      const records = (historyRes.data && historyRes.data.records) || [];
+      const checkedDates = records.map(r => r.date);
 
       this.setData({
         checkedIn,

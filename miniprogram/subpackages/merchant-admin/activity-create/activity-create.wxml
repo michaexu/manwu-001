@@ -3,19 +3,18 @@
   <scroll-view scroll-y class="form-scroll">
     <!-- 基础信息 -->
     <view class="section">
-      <text class="section__title">📋 基础信息</text>
+      <text class="section__title">📋 活动信息</text>
 
       <view class="form-group">
         <text class="form-label required">活动标题</text>
-        <input class="form-input" placeholder="输入活动标题" value="{{form.title}}" data-field="title" bindinput="handleInput" maxlength="100"/>
+        <input class="form-input" placeholder="输入活动标题" value="{{form.title}}" data-field="title" bindinput="handleInput" maxlength="50"/>
       </view>
 
       <view class="form-group">
         <text class="form-label required">活动描述</text>
-        <textarea class="form-textarea" placeholder="描述活动内容，吸引用户参与" value="{{form.description}}" data-field="description" bindinput="handleInput" maxlength="500" auto-height/>
+        <textarea class="form-textarea" placeholder="描述活动内容，吸引用户参与" value="{{form.description}}" data-field="description" bindinput="handleInput" maxlength="200" auto-height/>
       </view>
 
-      <!-- 图标和颜色 -->
       <view class="form-group">
         <text class="form-label">活动图标</text>
         <view class="emoji-grid">
@@ -44,29 +43,65 @@
       </view>
     </view>
 
+    <!-- 活动图片 -->
+    <view class="section">
+      <text class="section__title">🖼️ 活动图片</text>
+
+      <view class="form-group">
+        <view class="upload-box" bindtap="uploadImage" data-field="image_url">
+          <image wx:if="{{form.image_url}}" class="upload-preview" src="{{form.image_url}}" mode="aspectFill"/>
+          <view wx:else class="upload-empty">
+            <text class="upload-icon">{{uploading.image ? '⏳' : '📷'}}</text>
+            <text class="upload-hint">{{uploading.image ? '上传中...' : '点击拍照或选择图片'}}</text>
+          </view>
+          <view wx:if="{{form.image_url}}" class="upload-overlay">
+            <text class="upload-overlay-text">点击更换</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
     <!-- 礼品信息 -->
     <view class="section">
       <text class="section__title">🎁 礼品信息</text>
 
       <view class="form-group">
         <text class="form-label required">礼品名称</text>
-        <input class="form-input" placeholder="例如：星巴克拿铁兑换券" value="{{form.gift_name}}" data-field="gift_name" bindinput="handleInput" maxlength="100"/>
+        <input class="form-input" placeholder="例如：免费咖啡一杯" value="{{form.gift_name}}" data-field="gift_name" bindinput="handleInput" maxlength="30"/>
       </view>
 
       <view class="form-group">
         <text class="form-label">礼品规格</text>
-        <input class="form-input" placeholder="例如：大杯/355ml" value="{{form.gift_spec}}" data-field="gift_spec" bindinput="handleInput" maxlength="200"/>
+        <input class="form-input" placeholder="例如：中杯/大杯（可选）" value="{{form.gift_spec}}" data-field="gift_spec" bindinput="handleInput" maxlength="30"/>
       </view>
 
       <view class="form-group">
         <text class="form-label">礼品介绍</text>
-        <textarea class="form-textarea" placeholder="详细介绍礼品内容和价值" value="{{form.gift_description}}" data-field="gift_description" bindinput="handleInput" maxlength="1000" auto-height/>
+        <textarea class="form-textarea" placeholder="详细介绍礼品和使用说明" value="{{form.gift_description}}" data-field="gift_description" bindinput="handleInput" maxlength="100" auto-height/>
+      </view>
+    </view>
+
+    <!-- 礼品图片 -->
+    <view class="section">
+      <text class="section__title">📸 礼品图片</text>
+
+      <view class="form-group">
+        <view class="upload-box" bindtap="uploadImage" data-field="gift_image_url">
+          <image wx:if="{{form.gift_image_url}}" class="upload-preview" src="{{form.gift_image_url}}" mode="aspectFill"/>
+          <view wx:else class="upload-empty">
+            <text class="upload-icon">{{uploading.gift ? '⏳' : '🎁'}}</text>
+            <text class="upload-hint">{{uploading.gift ? '上传中...' : '点击拍照或选择图片'}}</text>
+          </view>
+          <view wx:if="{{form.gift_image_url}}" class="upload-overlay">
+            <text class="upload-overlay-text">点击更换</text>
+          </view>
+        </view>
       </view>
     </view>
 
     <!-- 参与条件 -->
     <view class="section">
-      <text class="section__title">📊 参与条件</text>
+      <text class="section__title">📊 参与规则</text>
 
       <view class="form-group">
         <text class="form-label required">所需积分</text>
@@ -74,35 +109,25 @@
           <input class="form-input form-input--number" type="number" placeholder="100" value="{{form.points_required}}" data-field="points_required" bindinput="handleNumberInput"/>
           <text class="form-suffix">积分</text>
         </view>
-        <text class="form-hint">普通用户参与活动需要消耗的积分，VIP 优先使用月度免积分额度</text>
+        <text class="form-hint">普通用户参与活动需要消耗的积分</text>
       </view>
 
       <view class="form-group">
-        <text class="form-label">👑 VIP 名额</text>
+        <text class="form-label">VIP 免费额度</text>
         <view class="form-input-row">
           <input class="form-input form-input--number" type="number" placeholder="0" value="{{form.vip_quota}}" data-field="vip_quota" bindinput="handleNumberInput"/>
-          <text class="form-suffix">位</text>
+          <text class="form-suffix">次/月</text>
         </view>
-        <text class="form-hint">VIP 用户专属参与名额，0 表示不限制</text>
+        <text class="form-hint">VIP 用户每月可免费领取次数，0 表示不可免费领取</text>
       </view>
 
       <view class="form-group">
-        <text class="form-label">🎫 普通用户名额</text>
+        <text class="form-label">普通用户名额</text>
         <view class="form-input-row">
           <input class="form-input form-input--number" type="number" placeholder="0" value="{{form.regular_quota}}" data-field="regular_quota" bindinput="handleNumberInput"/>
           <text class="form-suffix">位</text>
         </view>
-        <text class="form-hint">普通用户参与名额，0 表示不限制</text>
-      </view>
-    </view>
-
-    <!-- 商家介绍 -->
-    <view class="section">
-      <text class="section__title">🏪 商家介绍</text>
-
-      <view class="form-group">
-        <text class="form-label">商家介绍（可覆盖默认）</text>
-        <textarea class="form-textarea" placeholder="介绍你的商家，让用户更了解你" value="{{form.merchant_description}}" data-field="merchant_description" bindinput="handleInput" maxlength="500" auto-height/>
+        <text class="form-hint">普通用户参与名额，0 表示不限</text>
       </view>
     </view>
 

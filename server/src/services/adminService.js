@@ -134,6 +134,182 @@ const adminService = {
     });
   },
 
+  // ==================== 商家管理 ====================
+
+  /**
+   * 商家列表（下拉用，仅 id + name）
+   */
+  async getMerchantList() {
+    const result = await db.query(
+      'SELECT id, name FROM merchants WHERE status = $1 ORDER BY name',
+      ['active']
+    );
+    return result.rows;
+  },
+
+  /**
+   * 商家完整列表
+   */
+  async getMerchants({ page = 1, pageSize = 20, keyword, status }) {
+    const offset = (page - 1) * pageSize;
+    const conditions = [];
+    const params = [];
+
+    if (status) {
+      params.push(status);
+      conditions.push(`m.status = $${params.length}`);
+    }
+    if (keyword) {
+      params.push(`%${keyword}%`);
+      conditions.push(`(m.name LIKE $${params.length} OR m.phone LIKE $${params.length})`);
+    }
+
+    const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
+
+    const countResult = await db.query(
+      `SELECT COUNT(*) as count FROM merchants m ${where}`,
+      params
+    );
+
+    params.push(pageSize, offset);
+    const result = await db.query(
+      `SELECT m.*, u.phone as owner_phone, u.nick_name as owner_name,
+              (SELECT COUNT(*) FROM activities WHERE merchant_id = m.id) as activity_count,
+              (SELECT COUNT(*) FROM redemption_records WHERE merchant_id = m.id) as redeem_count
+       FROM merchants m
+       LEFT JOIN users u ON m.user_id = u.id
+       ${where}
+       ORDER BY m.created_at DESC
+       LIMIT $${params.length - 1} OFFSET $${params.length}`,
+      params
+    );
+
+    return {
+      merchants: result.rows,
+      total: parseInt(countResult.rows[0].count),
+      page,
+      pageSize
+    };
+  },
+
+  /**
+   * 商家详情
+   */
+  async getMerchantDetail(merchantId) {
+    const result = await db.query(
+      `SELECT m.*, u.phone as owner_phone, u.nick_name as owner_name,
+              (SELECT COUNT(*) FROM activities WHERE merchant_id = m.id) as activity_count,
+              (SELECT COUNT(*) FROM redemption_records WHERE merchant_id = m.id) as redeem_count
+       FROM merchants m
+       LEFT JOIN users u ON m.user_id = u.id
+       WHERE m.id = $1`,
+      [merchantId]
+    );
+
+    if (result.rows.length === 0) {
+      throw new NotFoundError('商家不存在');
+    }
+
+    return result.rows[0];
+  },
+
+  /**
+   * 创建商家（同时创建或关联用户账号）
+   */
+  async createMerchant({ name, phone, address, description, password }) {
+    // 检查手机号是否已被注册为商家
+    const existingMerchant = await db.query(
+      `SELECT m.* FROM merchants m JOIN users u ON m.user_id = u.id WHERE u.phone = $1`,
+      [phone]
+    );
+    if (existingMerchant.rows.length > 0) {
+      throw new ConflictError('该手机号已关联商家');
+    }
+
+    // 查找或创建用户
+    let userId;
+    const userResult = await db.query('SELECT * FROM users WHERE phone = $1', [phone]);
+    if (userResult.rows.length > 0) {
+      const user = userResult.rows[0];
+      if (user.role !== 'user') {
+        throw new ConflictError('该手机号已是管理员，无法创建商家');
+      }
+      userId = user.id;
+      // 升级为商家角色
+      await db.query("UPDATE users SET role = 'merchant', updated_at = NOW() WHERE id = $1", [userId]);
+    } else {
+      const bcrypt = require('bcryptjs');
+      const hashedPassword = await bcrypt.hash(password || '123456', 10);
+      const insertResult = await db.query(
+        `INSERT INTO users (phone, nick_name, role, password_hash) VALUES ($1, $2, 'merchant', $3)`,
+        [phone, name, hashedPassword]
+      );
+      userId = insertResult.insertId;
+    }
+
+    // 创建商家
+    const insertResult = await db.query(
+      `INSERT INTO merchants (user_id, name, phone, address, description)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [userId, name, phone, address || null, description || null]
+    );
+
+    const result = await db.query('SELECT * FROM merchants WHERE id = $1', [insertResult.insertId]);
+    return result.rows[0];
+  },
+
+  /**
+   * 更新商家
+   */
+  async updateMerchant(merchantId, data) {
+    const fields = [];
+    const values = [];
+
+    const updatableFields = ['name', 'phone', 'address', 'description', 'status'];
+    for (const field of updatableFields) {
+      if (data[field] !== undefined) {
+        fields.push(`${field} = $${values.length + 1}`);
+        values.push(data[field]);
+      }
+    }
+
+    if (fields.length === 0) {
+      const r = await db.query('SELECT * FROM merchants WHERE id = $1', [merchantId]);
+      if (r.rows.length === 0) throw new NotFoundError('商家不存在');
+      return r.rows[0];
+    }
+
+    fields.push('updated_at = NOW()');
+    values.push(merchantId);
+    await db.query(
+      `UPDATE merchants SET ${fields.join(', ')} WHERE id = $${values.length}`,
+      values
+    );
+
+    const result = await db.query('SELECT * FROM merchants WHERE id = $1', [merchantId]);
+    if (result.rows.length === 0) throw new NotFoundError('商家不存在');
+    return result.rows[0];
+  },
+
+  /**
+   * 删除商家
+   */
+  async deleteMerchant(merchantId) {
+    const merchant = await db.query('SELECT * FROM merchants WHERE id = $1', [merchantId]);
+    if (merchant.rows.length === 0) throw new NotFoundError('商家不存在');
+
+    // 检查是否有关联活动
+    const activityCount = await db.query(
+      'SELECT COUNT(*) as count FROM activities WHERE merchant_id = $1',
+      [merchantId]
+    );
+    if (parseInt(activityCount.rows[0].count) > 0) {
+      throw new ConflictError('该商家下有活动，无法删除');
+    }
+
+    await db.query('DELETE FROM merchants WHERE id = $1', [merchantId]);
+  },
+
   // ==================== 用户管理 ====================
 
   /**
@@ -233,9 +409,33 @@ const adminService = {
 
     return {
       ...user,
-      phone: user.phone ? user.phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2') : null,
       stats: stats.rows[0]
     };
+  },
+
+  /**
+   * 重置用户密码（管理员操作）
+   */
+  async resetUserPassword(adminId, targetUserId, newPassword) {
+    await this._verifyAdmin(adminId);
+
+    const user = await db.query('SELECT id, phone FROM users WHERE id = $1', [targetUserId]);
+    if (user.rows.length === 0) throw new NotFoundError('用户不存在');
+
+    const bcrypt = require('bcryptjs');
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await db.query(
+      'UPDATE users SET password_hash = $1, updated_at = NOW() WHERE id = $2',
+      [hashedPassword, targetUserId]
+    );
+
+    // 记录操作日志
+    await db.query(
+      `INSERT INTO admin_logs (admin_id, target_user_id, action, detail)
+       VALUES ($1, $2, 'reset_password', $3)`,
+      [adminId, targetUserId, `重置用户 ${user.rows[0].phone} 的密码`]
+    );
   },
 
   // ==================== 全局统计看板 ====================

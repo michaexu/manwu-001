@@ -10,6 +10,7 @@ import * as Members from './pages/members.js';
 import * as Redemptions from './pages/redemptions.js';
 import * as Points from './pages/points.js';
 import * as Settings from './pages/settings.js';
+import * as Merchants from './pages/merchants.js';
 
 // ========== Page Map ==========
 const pages = {
@@ -18,6 +19,7 @@ const pages = {
   members:     { title: '会员管理', render: Members.render },
   redemptions: { title: '核销记录', render: Redemptions.render },
   points:      { title: '积分管理', render: Points.render },
+  merchants:   { title: '商家管理', render: Merchants.render },
   settings:    { title: '系统设置', render: Settings.render }
 };
 
@@ -221,20 +223,10 @@ export function formatDate(dateStr) {
   if (!dateStr) return '-';
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) return dateStr;
-  const now = new Date();
-  const diff = now - d;
-
-  if (diff < 60000) return '刚刚';
-  if (diff < 3600000) return `${Math.floor(diff/60000)}分钟前`;
-  if (diff < 86400000) return `${Math.floor(diff/3600000)}小时前`;
 
   const y = d.getFullYear();
   const m = String(d.getMonth()+1).padStart(2,'0');
   const day = String(d.getDate()).padStart(2,'0');
-  const h = String(d.getHours()).padStart(2,'0');
-  const min = String(d.getMinutes()).padStart(2,'0');
-
-  if (y === now.getFullYear()) return `${m}-${day} ${h}:${min}`;
   return `${y}-${m}-${day}`;
 }
 

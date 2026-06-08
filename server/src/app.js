@@ -62,8 +62,8 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// Body解析
-app.use(express.json({ limit: '1mb' }));
+// Body解析（上传 base64 图片需要更大的限制）
+app.use(express.json({ limit: '10mb' }));
 
 // 根路径重定向到管理后台
 app.get('/', (req, res) => res.redirect('/admin'));
@@ -80,6 +80,10 @@ app.get('/ready', async (req, res) => {
     res.status(503).json({ status: 'degraded', database: 'disconnected' });
   }
 });
+
+// 上传文件静态服务
+const uploadsDir = path.resolve(__dirname, '../../uploads');
+app.use('/uploads', express.static(uploadsDir));
 
 // 商家Web后台静态文件
 const adminDir = path.resolve(__dirname, '../../admin');
